@@ -55,9 +55,9 @@ O sistema utiliza um banco de dados relacional com as seguintes entidades princi
 - **ReservationTypes**: Categoriza os tipos de reserva (reunião, mentoria, grupo de estudo, etc.)
 - **Notifications**: Sistema de notificação para alertar usuários sobre suas reservas
 
-O diagrama do banco de dados está disponível em <a href="./assets/banco-salas.pdf">`assets/banco-salas.pdf`</a>.<br>
+O diagrama do banco de dados está disponível em <a href="assets/banco-salas.pdf">`assets/banco-salas.pdf`</a>.<br>
 
-<img src="./assets/banco-salas.svg">
+<img src="assets/banco-salas.svg">
 
 ## Como Executar o Projeto Localmente
 

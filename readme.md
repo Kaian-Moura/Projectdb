@@ -59,6 +59,44 @@ O diagrama do banco de dados está disponível em <a href="./assets/banco-salas.
 
 <img src="./assets/banco-salas.svg">
 
+## Arquitetura MVC
+
+O projeto segue a arquitetura **MVC (Model-View-Controller)**, que separa a aplicação em três camadas principais:
+
+- **Model:** Responsável pela estrutura dos dados e interação direta com o banco de dados PostgreSQL (sem ORM, usando SQL puro).
+- **Controller:** Gerencia a lógica de negócios, recebendo requisições HTTP, validando dados e manipulando o banco de dados.
+- **View:** Representada pelo frontend (ou cliente REST) que consome a API, exibindo e interagindo com os dados.
+
+### Diagrama de Arquitetura MVC
+
+```plaintext
++---------+         +-------------+         +---------+
+|  View   | <-----> | Controller  | <-----> |  Model  |
+| (Front) |         | (Rotas/API) |         | (SQL/DB)|
++---------+         +-------------+         +---------+
+```
+
+- **View:** Interface do usuário (pode ser um frontend web ou ferramentas como Postman).
+- **Controller:** Funções como `criarTarefa`, `listarTarefas`, etc.
+- **Model:** Tabelas SQL como `tarefas`, `users`, etc.
+
+## Como Configurar o Banco de Dados
+
+1. **Crie o banco de dados PostgreSQL** (ex: `kaian`).
+2. **Configure as variáveis de ambiente** no arquivo `.env`:
+   ```
+   DB_HOST=...
+   DB_PORT=...
+   DB_USER=...
+   DB_PASSWORD=...
+   DB_NAME=kaian
+   ```
+3. **Rode as migrações**:
+   Execute o script SQL para criar as tabelas e dados iniciais:
+   ```bash
+   psql -U seu_usuario -d kaian -f scripts/init.sql
+   ```
+
 ## Como Executar o Projeto Localmente
 
 ### Pré-requisitos
@@ -133,3 +171,26 @@ npm test
 ## Documentação Adicional
 
 A documentação completa da arquitetura web está disponível em <a href="./docs/wad.md">`docs/wad.md`</a>.
+
+## Como Testar as APIs
+
+Você pode testar os endpoints usando ferramentas como Postman, Insomnia ou o arquivo `rest.http` incluso no projeto.
+
+Exemplo de endpoints:
+
+- **Criar tarefa:** `POST /api/tarefas`
+- **Listar tarefas:** `GET /api/tarefas`
+- **Editar tarefa:** `PUT /api/tarefas/:id`
+- **Excluir tarefa:** `DELETE /api/tarefas/:id`
+
+Veja exemplos de requisições no arquivo `rest.http` ou utilize o Postman para enviar requisições HTTP.
+
+## Requisitos Mínimos Atendidos
+
+- [x] Criação do banco de dados PostgreSQL e conexão
+- [x] Migração funcional (`scripts/init.sql`)
+- [x] Implementação de Models (SQL)
+- [x] Implementação de Controllers (`controllers/`)
+- [x] Rotas funcionando (`routes/`)
+- [x] Arquitetura MVC completa
+- [x] Documentação completa

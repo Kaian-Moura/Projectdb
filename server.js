@@ -14,6 +14,11 @@ app.use(bodyParser.json());
 // Usando as rotas definidas
 app.use("/api", routes);
 
+// Rota para a raiz
+app.get("/", (req, res) => {
+  res.send("API online");
+});
+
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
 });

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentação da API - Reservas de Salas</title>
+    <link rel="stylesheet" href="/styles/main.css" />
+    <link rel="stylesheet" href="/styles/documentacao.css" />
+  </head>
+  <body>
+    <header class="main-header">
+      <nav class="nav-container">
+        <div class="logo">
+          <a href="/">Reserva de Salas</a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="/">Início</a></li>
+          <li><a href="/documentacao">Documentação</a></li>
+          <li><a href="/status">Status</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <header class="doc-header">
+        <h1>Documentação da API - Reservas</h1>
+        <p>API RESTful para gerenciamento de reservas de salas do campus</p>
+        <div class="status online" id="apiStatus">API Online</div>
+      </header>
+
+      <div class="section">
+        <h2>Exemplo de Reservas</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Sala</th>
+              <th>Responsável</th>
+              <th>Início</th>
+              <th>Término</th>
+              <th>Propósito</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Auditório</td>
+              <td>Kaian</td>
+              <td>24/05/2025, 14:00:00</td>
+              <td>24/05/2025, 13:00:00</td>
+              <td>Estudar</td>
+              <td>confirmada</td>
+            </tr>
+            <tr>
+              <td>Sala de Reunião 1</td>
+              <td>João Silva</td>
+              <td>26/05/2025, 16:51:21</td>
+              <td>26/05/2025, 17:51:21</td>
+              <td>Reunião de equipe</td>
+              <td>confirmada</td>
+            </tr>
+            <tr>
+              <td>Sala de Conferência</td>
+              <td>Maria Souza</td>
+              <td>27/05/2025, 16:51:21</td>
+              <td>27/05/2025, 18:51:21</td>
+              <td>Apresentação de projeto</td>
+              <td>confirmada</td>
+            </tr>
+            <tr>
+              <td>Sala de Estudo</td>
+              <td>Carlos Santos</td>
+              <td>28/05/2025, 16:51:21</td>
+              <td>28/05/2025, 18:51:21</td>
+              <td>Sessão de estudo</td>
+              <td>confirmada</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>Endpoints de Reservas</h2>
+
+        <div class="endpoint">
+          <span class="method">GET</span>
+          <span class="url">/api/reservas</span>
+          <div class="description">
+            Lista todas as reservas cadastradas no sistema.
+          </div>
+          <div class="response">
+            <pre><code>[
+  {
+    "id": 1,
+    "sala_nome": "Auditório",
+    "usuario_nome": "Kaian",
+    "data_inicio": "2025-05-24T14:00:00",
+    "data_fim": "2025-05-24T13:00:00",
+    "proposito": "Estudar",
+    "status": "confirmada"
+  },
+  {
+    "id": 2,
+    "sala_nome": "Sala de Reunião 1",
+    "usuario_nome": "João Silva",
+    "data_inicio": "2025-05-26T16:51:21",
+    "data_fim": "2025-05-26T17:51:21",
+    "proposito": "Reunião de equipe",
+    "status": "confirmada"
+  },
+  {
+    "id": 3,
+    "sala_nome": "Sala de Conferência",
+    "usuario_nome": "Maria Souza",
+    "data_inicio": "2025-05-27T16:51:21",
+    "data_fim": "2025-05-27T18:51:21",
+    "proposito": "Apresentação de projeto",
+    "status": "confirmada"
+  },
+  {
+    "id": 4,
+    "sala_nome": "Sala de Estudo",
+    "usuario_nome": "Carlos Santos",
+    "data_inicio": "2025-05-28T16:51:21",
+    "data_fim": "2025-05-28T18:51:21",
+    "proposito": "Sessão de estudo",
+    "status": "confirmada"
+  }
+]</code></pre>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <span class="method">GET</span>
+          <span class="url">/api/reservas/:id</span>
+          <div class="description">Busca uma reserva específica pelo ID.</div>
+          <div class="params">
+            <div class="param">
+              <span class="param-name">id</span> - ID da reserva (número)
+            </div>
+          </div>
+          <div class="response">
+            <pre><code>{
+  "id": 2,
+  "sala_nome": "Sala de Reunião 1",
+  "usuario_nome": "João Silva",
+  "data_inicio": "2025-05-26T16:51:21",
+  "data_fim": "2025-05-26T17:51:21",
+  "proposito": "Reunião de equipe",
+  "status": "confirmada"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <span class="method">POST</span>
+          <span class="url">/api/reservas</span>
+          <div class="description">Cria uma nova reserva no sistema.</div>
+          <div class="request-body">
+            <pre><code>{
+  "sala_id": 1,
+  "usuario_nome": "Kaian",
+  "data_inicio": "2025-05-24T14:00:00",
+  "data_fim": "2025-05-24T13:00:00",
+  "proposito": "Estudar"
+}</code></pre>
+          </div>
+          <div class="response">
+            <pre><code>{
+  "id": 1,
+  "sala_nome": "Auditório",
+  "usuario_nome": "Kaian",
+  "data_inicio": "2025-05-24T14:00:00",
+  "data_fim": "2025-05-24T13:00:00",
+  "proposito": "Estudar",
+  "status": "confirmada"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <span class="method">PUT</span>
+          <span class="url">/api/reservas/:id</span>
+          <div class="description">
+            Atualiza os dados de uma reserva existente.
+          </div>
+          <div class="params">
+            <div class="param">
+              <span class="param-name">id</span> - ID da reserva (número)
+            </div>
+          </div>
+          <div class="request-body">
+            <pre><code>{
+  "sala_id": 1,
+  "usuario_nome": "Kaian",
+  "data_inicio": "2025-05-24T15:00:00",
+  "data_fim": "2025-05-24T16:00:00",
+  "proposito": "Estudo em grupo"
+}</code></pre>
+          </div>
+          <div class="response">
+            <pre><code>{
+  "id": 1,
+  "sala_nome": "Auditório",
+  "usuario_nome": "Kaian",
+  "data_inicio": "2025-05-24T15:00:00",
+  "data_fim": "2025-05-24T16:00:00",
+  "proposito": "Estudo em grupo",
+  "status": "confirmada"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <span class="method">DELETE</span>
+          <span class="url">/api/reservas/:id</span>
+          <div class="description">Remove uma reserva do sistema.</div>
+          <div class="params">
+            <div class="param">
+              <span class="param-name">id</span> - ID da reserva (número)
+            </div>
+          </div>
+          <div class="response">
+            <pre><code>{ "message": "Reserva removida com sucesso" }</code></pre>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Verificar status da API
+      async function checkApiStatus() {
+        try {
+          const response = await fetch("/status");
+          const data = await response.json();
+          const statusElement = document.getElementById("apiStatus");
+          if (data.status === "online") {
+            statusElement.className = "status online";
+            statusElement.textContent = "API Online";
+          } else {
+            statusElement.className = "status offline";
+            statusElement.textContent = "API Offline";
+          }
+        } catch (error) {
+          const statusElement = document.getElementById("apiStatus");
+          statusElement.className = "status offline";
+          statusElement.textContent = "API Offline";
+        }
+      }
+      checkApiStatus();
+      setInterval(checkApiStatus, 30000);
+    </script>
+  </body>
+</html>

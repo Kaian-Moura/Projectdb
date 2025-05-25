@@ -1,3 +1,7 @@
+-- Drop legacy tables if they exist (antes de tudo)
+DROP TABLE IF EXISTS reservas CASCADE;
+DROP TABLE IF EXISTS salas CASCADE;
+
 -- Tabela de usuários
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -95,10 +99,6 @@ CREATE TABLE notifications (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (reservation_id) REFERENCES room_reservations(id)
 );
-
--- Drop tables if they exist
-DROP TABLE IF EXISTS reservas;
-DROP TABLE IF EXISTS salas;
 
 -- Create the salas (rooms) table
 CREATE TABLE IF NOT EXISTS salas (

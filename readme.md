@@ -13,6 +13,103 @@ O Sistema de Reserva de Salas é uma aplicação web desenvolvida para gerenciar
 - **Notificações**: Sistema de alerta para confirmação e lembretes de reservas
 - **Relatórios**: Geração de relatórios de utilização por sala, usuário ou período
 
+> O Inteli possui um modelo de ensino 100% baseado em projetos, e os estudantes são livres para estudar em qualquer espaço do campus. Este sistema facilita o gerenciamento dos espaços compartilhados, garantindo que todos tenham acesso justo às salas de estudo e cabines para chamadas.
+
+## Como Executar o Projeto
+
+### Pré-requisitos
+
+- Node.js (v14 ou superior)
+- npm ou yarn
+- PostgreSQL (para o banco de dados)
+
+### Instalação e Configuração
+
+1. Clone o repositório:
+
+```bash
+git clone git@github.com:Kaian-Moura/Projectdb.git
+cd inteli-assignments/Projectdb
+```
+
+2. Instale as dependências:
+
+```bash
+npm install
+```
+
+3. Configure as variáveis de ambiente:
+
+```bash
+cp .env.example .env
+# Edite o arquivo .env com seus dados de conexão ao banco
+```
+
+Exemplo de configuração do `.env`:
+
+```
+DB_USER=
+DB_HOST=
+DB_DATABASE=
+DB_PASSWORD=
+DB_PORT=
+DB_SSL=
+PORT=
+NODE_ENV=development
+```
+
+4. Inicialize o banco de dados:
+
+```bash
+psql -U seu_usuario -d nome_do_banco -f scripts/init.sql
+```
+
+5. Execute o servidor:
+
+```bash
+npm start
+```
+
+O servidor estará disponível em http://localhost:3000
+
+## Testes
+
+Para executar os testes:
+
+```bash
+npm test
+```
+
+Para testar os endpoints da API, utilize o arquivo `rest.http` com a extensão REST Client do VS Code.
+
+## Tecnologias Utilizadas
+
+- **Backend**: Node.js, Express
+- **Banco de Dados**: PostgreSQL
+- **Frontend**: HTML, CSS, JavaScript
+- **Arquitetura**: MVC (Model-View-Controller)
+- **Testes**: Jest
+- **Documentação**: Markdown, OpenAPI (em desenvolvimento)
+
+## API Endpoints
+
+A API oferece endpoints para gerenciamento completo do sistema. Principais recursos:
+
+- **Usuários**: `/usuarios` - Gerenciamento de estudantes e administradores
+- **Salas**: `/salas` - Gerenciamento de salas de estudo e cabines
+- **Tipos de Sala**: `/tipos-sala` - Categorização dos espaços
+- **Reservas**: `/reservas` - Agendamento e controle de reservas
+
+Para a documentação completa dos endpoints, consulte o arquivo [`docs/wad.md`](./docs/wad.md).
+
+## Documentação
+
+- **Documentação Técnica Completa**
+  - Arquitetura Web (WAD): [`docs/wad.md`](./docs/wad.md)
+  - Documentação HTML: `public/documentacao-reservas.html` (versão navegável)
+- **Modelo de Dados**
+  - Diagrama: `assets/banco-salas.pdf` e `assets/banco-salas.svg`
+
 ## Estrutura de Pastas e Arquivos
 
 ```
@@ -42,6 +139,7 @@ O Sistema de Reserva de Salas é uma aplicação web desenvolvida para gerenciar
 ├── server.js              # Arquivo principal que inicializa o servidor
 ├── services/              # Serviços auxiliares
 │   └── userService.js     # Serviço para gerenciamento de salas
+├── public/                # Arquivos estáticos (HTML, CSS, JS)
 ```
 
 ## Modelo de Dados
@@ -154,20 +252,6 @@ http://localhost:3000 ou http://127.0.0.1:3000/
 - Cancelamento e alteração de reservas
 - Visualização de histórico de reservas pessoais
 - Notificações de confirmação e lembretes
-
-## Tecnologias Utilizadas
-
-- **Backend**: Node.js, Express
-- **Banco de Dados**: PostgreSQL
-- **Frontend**: HTML, CSS, JavaScript
-
-## Testes
-
-Para executar os testes, utilize o comando:
-
-```bash
-npm test
-```
 
 ## Documentação Adicional
 

@@ -96,6 +96,35 @@ CREATE TABLE notifications (
     FOREIGN KEY (reservation_id) REFERENCES room_reservations(id)
 );
 
+-- Drop tables if they exist
+DROP TABLE IF EXISTS reservas;
+DROP TABLE IF EXISTS salas;
+
+-- Create the salas (rooms) table
+CREATE TABLE IF NOT EXISTS salas (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  capacidade INT NOT NULL,
+  localizacao VARCHAR(100) NOT NULL,
+  recursos TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create the reservas (reservations) table
+CREATE TABLE IF NOT EXISTS reservas (
+  id SERIAL PRIMARY KEY,
+  sala_id INT NOT NULL,
+  usuario_nome VARCHAR(100) NOT NULL,
+  data_inicio TIMESTAMP NOT NULL,
+  data_fim TIMESTAMP NOT NULL,
+  proposito TEXT,
+  status VARCHAR(20) DEFAULT 'confirmada',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (sala_id) REFERENCES salas(id) ON DELETE CASCADE
+);
+
 -- Inserindo dados iniciais para os horários de reserva
 INSERT INTO reservation_slots (name, start_time, end_time) VALUES 
     ('Manhã - 1º horário', '08:00:00', '10:00:00'),
@@ -118,3 +147,16 @@ CREATE INDEX idx_reservations_user ON room_reservations(user_id);
 CREATE INDEX idx_reservations_room ON room_reservations(room_id);
 CREATE INDEX idx_reservations_date ON room_reservations(reservation_date);
 CREATE INDEX idx_notifications_user ON notifications(user_id);
+
+-- Insert sample rooms
+INSERT INTO salas (nome, capacidade, localizacao, recursos) VALUES
+('Sala de Reunião 1', 8, 'Bloco A, 1º Andar', 'Projetor, Quadro, Videoconferência'),
+('Sala de Conferência', 20, 'Bloco B, 2º Andar', 'Projetor, Sistema de som, Videoconferência'),
+('Sala de Estudo', 4, 'Biblioteca', 'Quadro branco'),
+('Auditório', 50, 'Prédio Principal', 'Palco, Sistema de som, Projetor, Microfones');
+
+-- Insert some sample reservations
+INSERT INTO reservas (sala_id, usuario_nome, data_inicio, data_fim, proposito) VALUES
+(1, 'João Silva', NOW() + interval '1 day', NOW() + interval '1 day 1 hour', 'Reunião de equipe'),
+(2, 'Maria Souza', NOW() + interval '2 days', NOW() + interval '2 days 2 hours', 'Apresentação de projeto'),
+(3, 'Carlos Santos', NOW() + interval '3 days', NOW() + interval '3 days 2 hours', 'Sessão de estudo');

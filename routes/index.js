@@ -1,12 +1,16 @@
 // routes/index.js
 const express = require("express");
 const router = express.Router();
-const TarefaController = require("../controllers/TarefaController");
 
-// Rotas para o CRUD de tarefas
-router.post("/tarefas", TarefaController.criarTarefa);
-router.get("/tarefas", TarefaController.listarTarefas);
-router.put("/tarefas/:id", TarefaController.editarTarefa);
-router.delete("/tarefas/:id", TarefaController.excluirTarefa);
+// Import routes
+try {
+  const reservasRoutes = require("./reservas");
+
+  // Register routes
+  router.use("/reservas", reservasRoutes);
+  console.log("Reservas routes registered successfully");
+} catch (error) {
+  console.error("Error loading reservas routes:", error.message);
+}
 
 module.exports = router;

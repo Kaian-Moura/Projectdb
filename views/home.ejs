@@ -53,32 +53,22 @@
 
       <div class="card">
         <h3>Configuração do Banco de Dados</h3>
-        <p>Para criar a tabela de tarefas de exemplo, execute o comando SQL:</p>
-        <div class="code">
-          CREATE TABLE IF NOT EXISTS tarefas (<br />
-          &nbsp;&nbsp;id SERIAL PRIMARY KEY,<br />
-          &nbsp;&nbsp;nome VARCHAR(100) NOT NULL,<br />
-          &nbsp;&nbsp;descricao TEXT,<br />
-          &nbsp;&nbsp;status VARCHAR(20) DEFAULT 'pendente',<br />
-          &nbsp;&nbsp;created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br />
-          &nbsp;&nbsp;updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP<br />
-          );
-        </div>
-        <p>Ou execute o script de inicialização usando:</p>
+          <p>Para criar as tabelas necessárias, execute o script de inicialização usando:</p>
         <div class="code">node scripts/runSQLScript.js</div>
       </div>
 
       <div class="card">
         <h3>Endpoints Disponíveis</h3>
         <ul>
-          <li><strong>GET /api/tarefas</strong> - Listar todas as tarefas</li>
-          <li><strong>POST /api/tarefas</strong> - Criar nova tarefa</li>
-          <li><strong>PUT /api/tarefas/:id</strong> - Atualizar tarefa</li>
-          <li><strong>DELETE /api/tarefas/:id</strong> - Excluir tarefa</li>
+          <li><strong>GET /api/reservas</strong> - Listar todas as reservas</li>
+          <li><strong>POST /api/reservas</strong> - Criar nova reserva</li>
+          <li><strong>PUT /api/reservas/:id</strong> - Atualizar reserva</li>
+          <li><strong>DELETE /api/reservas/:id</strong> - Cancelar reserva</li>
+          <li><strong>GET /api/reservas/usuario/:nome</strong> - Listar reservas de um usuário</li>
+          <li><strong>GET /api/reservas/salas</strong> - Listar todas as salas</li>
         </ul>
         <p>
-          Acesse <a href="/tarefas-view">Lista de Tarefas</a> para ver as
-          tarefas existentes.
+          Acesse <a href="/reservas-view">Sistema de Reserva de Salas</a> para gerenciar reservas.
         </p>
       </div>
     </div>

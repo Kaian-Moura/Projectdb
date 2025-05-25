@@ -11,6 +11,7 @@ const port = 3000;
 // Middlewares
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Usando as rotas definidas
 app.use("/api", routes);
@@ -42,6 +43,36 @@ app.get("/tarefas-view", async (req, res) => {
       erro: `Erro ao carregar tarefas: ${err.message}. Detalhes: ${
         err.stack ? err.stack.split("\n")[0] : "N/A"
       }`,
+    });
+  }
+});
+
+// Nova rota para exibir reservas de salas
+app.get("/reservas-view", async (req, res) => {
+  let pool;
+  try {
+    pool = require("./config/database");
+    const salas = await pool.query("SELECT * FROM salas ORDER BY nome");
+    const reservas = await pool.query(`
+      SELECT r.*, s.nome as sala_nome 
+      FROM reservas r
+      JOIN salas s ON r.sala_id = s.id
+      ORDER BY r.data_inicio
+    `);
+    res.render("reservas", {
+      reservas: reservas.rows,
+      salas: salas.rows,
+      formatDate: (date) => new Date(date).toLocaleString(),
+    });
+  } catch (err) {
+    console.error("Erro na rota /reservas-view:", err);
+    res.render("reservas", {
+      reservas: [],
+      salas: [],
+      erro: `Erro ao carregar reservas: ${err.message}. Detalhes: ${
+        err.stack ? err.stack.split("\n")[0] : "N/A"
+      }`,
+      formatDate: (date) => new Date(date).toLocaleString(),
     });
   }
 });

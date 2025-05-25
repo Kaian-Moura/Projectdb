@@ -2,7 +2,7 @@
 
 ## Descrição do Sistema
 
-O Sistema de Reserva de Salas é uma aplicação web desenvolvida para gerenciar a reserva e utilização das salas de reunião do Inteli (R01 até R10). O sistema permite que estudantes e funcionários possam agendar as salas disponíveis para reuniões, trabalhos em grupo, mentorias e outras atividades acadêmicas, garantindo organização e otimização dos espaços compartilhados.
+O Sistema de Reserva de Salas é uma aplicação web desenvolvida para simular como seria a reserva e utilização das salas de reunião do Inteli (R01 até R10)(Porém, não usamos esse nome). O sistema permite que estudantes e funcionários possam agendar as salas disponíveis para reuniões, trabalhos em grupo, mentorias e outras atividades acadêmicas, garantindo organização e otimização dos espaços compartilhados.
 
 ### Características principais:
 
@@ -12,8 +12,6 @@ O Sistema de Reserva de Salas é uma aplicação web desenvolvida para gerenciar
 - **Agendamentos Recorrentes**: Possibilidade de agendar reservas periódicas (semanais, mensais)
 - **Notificações**: Sistema de alerta para confirmação e lembretes de reservas
 - **Relatórios**: Geração de relatórios de utilização por sala, usuário ou período
-
-> O Inteli possui um modelo de ensino 100% baseado em projetos, e os estudantes são livres para estudar em qualquer espaço do campus. Este sistema facilita o gerenciamento dos espaços compartilhados, garantindo que todos tenham acesso justo às salas de estudo e cabines para chamadas.
 
 ## Como Executar o Projeto
 

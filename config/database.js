@@ -6,24 +6,30 @@ const isSSL = process.env.DB_SSL === "true";
 
 // Criando a pool de conexões
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  user: process.env.DB_USER || "postgres",
+  host: process.env.DB_HOST || "localhost",
+  database: process.env.DB_DATABASE || "postgres",
+  password: process.env.DB_PASSWORD || "postgres",
+  port: process.env.DB_PORT || 5432,
   ssl: isSSL ? { rejectUnauthorized: false } : false,
+});
+
+// Log connection events to help with debugging
+pool.on("connect", () => {
+  console.log("Database connection established");
+});
+
+pool.on("error", (err) => {
+  console.error("Unexpected database error:", err);
+  // Don't exit the process, just log the error
 });
 
 // Testa a conexão ao iniciar a aplicação
 pool
-  .connect()
-  .then((client) => {
-    console.log("Conexão com o banco de dados estabelecida com sucesso.");
-    client.release();
-  })
-  .catch((err) => {
-    console.error("Erro ao conectar ao banco de dados:", err.message);
-    process.exit(1);
-  });
+  .query("SELECT NOW()")
+  .then(() => console.log("Database connection test successful"))
+  .catch((err) =>
+    console.error("Database connection test failed:", err.message)
+  );
 
 module.exports = pool;

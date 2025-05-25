@@ -54,6 +54,7 @@ O sistema utiliza um banco de dados relacional com as seguintes entidades princi
 - **RoomFeatures**: Características específicas de cada sala (capacidade, recursos disponíveis)
 - **ReservationTypes**: Categoriza os tipos de reserva (reunião, mentoria, grupo de estudo, etc.)
 - **Notifications**: Sistema de notificação para alertar usuários sobre suas reservas
+- **Tarefas**: (CRUD de tarefas para exemplo de uso da API)
 
 O diagrama do banco de dados está disponível em <a href="./assets/banco-salas.pdf">`assets/banco-salas.pdf`</a>.<br>
 
@@ -189,8 +190,8 @@ Veja exemplos de requisições no arquivo `rest.http` ou utilize o Postman para 
 
 - [x] Criação do banco de dados PostgreSQL e conexão
 - [x] Migração funcional (`scripts/init.sql`)
-- [x] Implementação de Models (SQL)
+- [x] Implementação de Models (SQL e arquivos em `models/`)
 - [x] Implementação de Controllers (`controllers/`)
 - [x] Rotas funcionando (`routes/`)
-- [x] Arquitetura MVC completa
-- [x] Documentação completa
+- [x] Arquitetura MVC completa (Models, Views [API], Controllers)
+- [x] Documentação completa (este README e docs/wad.md)

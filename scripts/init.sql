@@ -12,6 +12,25 @@ CREATE TABLE users (
     CONSTRAINT valid_role CHECK (role IN ('student', 'admin'))
 );
 
+-- Tabela de tarefas (necessária para o CRUD de tarefas)
+CREATE TABLE IF NOT EXISTS tarefas (
+    id SERIAL PRIMARY KEY,
+    user_id INT,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    status VARCHAR(20) DEFAULT 'pendente',
+    priority VARCHAR(20) DEFAULT 'media',
+    due_date DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT valid_status CHECK (status IN ('pendente', 'em_andamento', 'concluida', 'cancelada')),
+    CONSTRAINT valid_priority CHECK (priority IN ('baixa', 'media', 'alta', 'urgente'))
+);
+
+-- Adicionar índice para melhorar performance de consultas por usuário
+CREATE INDEX idx_tarefas_user ON tarefas(user_id);
+
 -- Tabela de tipos de salas
 CREATE TABLE room_types (
     id SERIAL PRIMARY KEY,

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lista de Tarefas</title>
+    <style>
+      .erro {
+        color: red;
+        background-color: #ffeeee;
+        padding: 10px;
+        border: 1px solid #ffcccc;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Tarefas</h1>
+
+    <% if (typeof erro !== 'undefined' && erro) { %>
+    <div class="erro"><%= erro %></div>
+    <% } %> <% if (tarefas && tarefas.length > 0) { %>
+    <ul>
+      <% tarefas.forEach(function(tarefa) { %>
+      <li>
+        <strong><%= tarefa.nome %></strong> - <%= tarefa.descricao %> [<%=
+        tarefa.status %>]
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p>Nenhuma tarefa disponível no momento.</p>
+    <% } %>
+
+    <hr />
+    <p>
+      Verifique se a tabela "tarefas" existe no seu banco de dados. Você pode
+      executar os scripts de inicialização em scripts/init.sql.
+    </p>
+  </body>
+</html>

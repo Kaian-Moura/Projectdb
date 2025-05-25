@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= titulo %></title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+      }
+      .card {
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+      .code {
+        background: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 3px;
+        font-family: monospace;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1><%= titulo %></h1>
+
+      <div class="card">
+        <h2><%= mensagem %></h2>
+        <p>Este é o sistema de gerenciamento de reservas de salas do Inteli.</p>
+      </div>
+
+      <div class="card">
+        <h3>Configuração do Banco de Dados</h3>
+        <p>Para criar a tabela de tarefas de exemplo, execute o comando SQL:</p>
+        <div class="code">
+          CREATE TABLE IF NOT EXISTS tarefas (<br />
+          &nbsp;&nbsp;id SERIAL PRIMARY KEY,<br />
+          &nbsp;&nbsp;nome VARCHAR(100) NOT NULL,<br />
+          &nbsp;&nbsp;descricao TEXT,<br />
+          &nbsp;&nbsp;status VARCHAR(20) DEFAULT 'pendente',<br />
+          &nbsp;&nbsp;created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br />
+          &nbsp;&nbsp;updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP<br />
+          );
+        </div>
+        <p>Ou execute o script de inicialização usando:</p>
+        <div class="code">node scripts/runSQLScript.js</div>
+      </div>
+
+      <div class="card">
+        <h3>Endpoints Disponíveis</h3>
+        <ul>
+          <li><strong>GET /api/tarefas</strong> - Listar todas as tarefas</li>
+          <li><strong>POST /api/tarefas</strong> - Criar nova tarefa</li>
+          <li><strong>PUT /api/tarefas/:id</strong> - Atualizar tarefa</li>
+          <li><strong>DELETE /api/tarefas/:id</strong> - Excluir tarefa</li>
+        </ul>
+        <p>
+          Acesse <a href="/tarefas-view">Lista de Tarefas</a> para ver as
+          tarefas existentes.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

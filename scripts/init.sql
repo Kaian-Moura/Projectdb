@@ -150,13 +150,13 @@ CREATE INDEX idx_notifications_user ON notifications(user_id);
 
 -- Insert sample rooms (atualizado para 7 salas de reunião)
 INSERT INTO salas (nome, capacidade, localizacao, recursos) VALUES
-('Sala de Reunião 1', 8, 'Bloco A, 1º Andar', 'Projetor, Quadro, Videoconferência'),
-('Sala de Reunião 2', 6, 'Bloco A, 1º Andar', 'Monitor LCD, Quadro, Videoconferência'),
-('Sala de Reunião 3', 10, 'Bloco A, 2º Andar', 'Projetor, Quadro, Videoconferência'),
-('Sala de Reunião 4', 4, 'Bloco B, 1º Andar', 'Monitor LCD, Quadro'),
-('Sala de Reunião 5', 12, 'Bloco B, 2º Andar', 'Projetor, Sistema de som, Videoconferência'),
-('Sala de Reunião 6', 8, 'Bloco C, 1º Andar', 'Monitor LCD, Quadro, Videoconferência'),
-('Sala de Reunião 7', 16, 'Bloco C, 2º Andar', 'Projetor, Sistema de som, Videoconferência');
+('Sala de Reunião 1', 8, 'Térreo', 'Televisão, Quadro'),
+('Sala de Reunião 2', 6, 'Térreo', 'Televisão, Quadro'),
+('Sala de Reunião 3', 10, 'Térreo', 'Televisão, Quadro'),
+('Sala de Reunião 4', 4, 'Térreo', 'Televisão, Quadro'),
+('Sala de Reunião 5', 12, 'Térreo', 'Televisão, Quadro'),
+('Sala de Reunião 6', 8, 'Térreo', 'Televisão, Quadro'),
+('Sala de Reunião 7', 16, 'Térreo', 'Televisão, Quadro');
 
 -- Insert some sample reservations
 INSERT INTO reservas (sala_id, usuario_nome, data_inicio, data_fim, proposito) VALUES

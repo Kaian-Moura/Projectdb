@@ -1,6 +1,7 @@
 // routes/index.js
 const express = require("express");
 const router = express.Router();
+const pool = require("../config/database"); // Importação do pool estava faltando
 
 // Import routes
 try {

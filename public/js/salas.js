@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+  console.log("Script de salas carregado");
+
   // Função para buscar todas as salas via API
   function loadRooms() {
     fetch("/api/salas")
@@ -37,4 +39,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Carregar salas quando a página iniciar
   loadRooms();
+
+  // Botões de reserva - redireciona para a página de reservas com o ID da sala
+  document.querySelectorAll(".reserve-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const salaId = this.getAttribute("data-id");
+      window.location.href = `/reservas-view?sala=${salaId}`;
+    });
+  });
+
+  // Filtros
+  document
+    .getElementById("aplicarFiltro")
+    .addEventListener("click", function () {
+      const capacidadeMinima = document.getElementById("capacidade").value;
+      const dataReserva = document.getElementById("dataReserva").value;
+
+      // Filtrar cards de sala
+      document.querySelectorAll(".room-card").forEach((card) => {
+        const capacidadeTexto =
+          card.querySelector("p:nth-child(2)").textContent;
+        const capacidade = parseInt(capacidadeTexto.match(/\d+/)[0]);
+
+        // Esconder salas com capacidade menor que a selecionada
+        if (capacidade < capacidadeMinima) {
+          card.style.display = "none";
+        } else {
+          card.style.display = "";
+        }
+      });
+    });
+
+  // Limpar filtros
+  document
+    .getElementById("limparFiltro")
+    .addEventListener("click", function () {
+      document.getElementById("capacidade").value = "1";
+      document.getElementById("dataReserva").value = "";
+
+      // Mostrar todas as salas novamente
+      document.querySelectorAll(".room-card").forEach((card) => {
+        card.style.display = "";
+      });
+    });
 });

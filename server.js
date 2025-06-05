@@ -77,6 +77,9 @@ app.get("/reservas-view", async (req, res) => {
   }
 });
 
+// Registre as rotas explicitamente na raiz
+app.use("/", require("./routes/index"));
+
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
 });

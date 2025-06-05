@@ -205,28 +205,6 @@
         <h1>Salas Disponíveis</h1>
       </header>
 
-      <div class="filter-section">
-        <h2 class="filter-title">Filtrar Salas</h2>
-        <div class="filter-form">
-          <div class="filter-group">
-            <label for="capacidade">Capacidade mínima:</label>
-            <input type="number" id="capacidade" min="1" value="1" />
-          </div>
-          <div class="filter-group">
-            <label for="dataReserva">Data para reserva:</label>
-            <input type="date" id="dataReserva" />
-          </div>
-          <div class="filter-buttons">
-            <button class="filter-btn" id="aplicarFiltro">
-              Aplicar Filtro
-            </button>
-            <button class="filter-btn clear-btn" id="limparFiltro">
-              Limpar
-            </button>
-          </div>
-        </div>
-      </div>
-
       <div class="rooms-container" id="roomList">
         <!-- Salas serão carregadas dinamicamente via JavaScript -->
         <% if (salas && salas.length > 0) { %> <% salas.forEach(function(sala) {
@@ -244,7 +222,7 @@
               <% }); } %>
             </div>
           </div>
-          <button class="reserve-btn" data-id="<%= sala.id %>">Reservar</button>
+          <button class="reserve-btn" data-id="<%= sala.id %>">Disponível</button>
         </div>
         <% }); %> <% } else { %>
         <p>Nenhuma sala disponível no momento.</p>

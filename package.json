@@ -6,7 +6,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "migrate": "node ./scripts/runSQLScript.js"
   },
   "keywords": [],
   "author": "",

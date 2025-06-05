@@ -2,16 +2,32 @@
 
 ## Descrição do Sistema
 
-O Sistema de Reserva de Salas é uma aplicação web desenvolvida para simular como seria a reserva e utilização das salas de reunião do Inteli (R01 até R10)(Porém, não usamos esse nome). O sistema permite que estudantes e funcionários possam agendar as salas disponíveis para reuniões, trabalhos em grupo, mentorias e outras atividades acadêmicas, garantindo organização e otimização dos espaços compartilhados.
+O Sistema de Reserva de Salas é uma aplicação web desenvolvida para simular como seria a reserva e utilização das salas de reunião do Inteli (R01 até R07). O sistema permite que estudantes e funcionários possam agendar as salas disponíveis para reuniões, trabalhos em grupo, mentorias e outras atividades acadêmicas, garantindo organização e otimização dos espaços compartilhados.
 
 ### Características principais:
 
-- **Reserva de Salas**: Agendamento de salas de reunião (R01 até R10) com datas e horários específicos
-- **Gerenciamento de Usuários**: Cadastro e controle de estudantes, professores e administradores
-- **Controle de Disponibilidade**: Visualização em tempo real das salas disponíveis
-- **Agendamentos Recorrentes**: Possibilidade de agendar reservas periódicas (semanais, mensais)
-- **Notificações**: Sistema de alerta para confirmação e lembretes de reservas
-- **Relatórios**: Geração de relatórios de utilização por sala, usuário ou período
+- **Reserva de Salas**: Agendamento de salas de reunião com datas e horários específicos através de uma interface intuitiva
+- **Visualização de Salas**: Catálogo de todas as salas disponíveis com suas características e capacidade
+- **Controle de Disponibilidade**: Visualização em tempo real das salas disponíveis com seleção de data e horário
+- **Gerenciamento de Reservas**: Interface para criar, editar e cancelar reservas
+- **Modal de Confirmação**: Feedback imediato ao usuário sobre o status das operações
+- **Filtragem de Reservas**: Possibilidade de filtrar reservas por nome do responsável
+
+## Interface de Usuário
+
+O sistema conta com três páginas principais:
+
+1. **Página Principal**: Visão geral do sistema e acesso às funcionalidades
+2. **Visualização de Salas**: Catálogo de todas as salas disponíveis para reserva
+3. **Gerenciamento de Reservas**: Interface para criar e gerenciar reservas
+
+### Funcionalidades de Interface
+
+- Seleção visual de datas e horários para reservas
+- Confirmações via modais em vez de redirecionamentos
+- Design responsivo e intuitivo com esquema de cores azuis
+- Filtragem dinâmica de informações
+- Validação de formulários em tempo real
 
 ## Como Executar o Projeto
 
@@ -70,33 +86,30 @@ npm start
 
 O servidor estará disponível em http://localhost:3000
 
-## Testes
-
-Para executar os testes:
-
-```bash
-npm test
-```
-
-Para testar os endpoints da API, utilize o arquivo `rest.http` com a extensão REST Client do VS Code.
-
 ## Tecnologias Utilizadas
 
 - **Backend**: Node.js, Express
 - **Banco de Dados**: PostgreSQL
-- **Frontend**: HTML, CSS, JavaScript
+- **Frontend**: HTML, CSS, JavaScript, EJS (templates)
 - **Arquitetura**: MVC (Model-View-Controller)
-- **Testes**: Jest
-- **Documentação**: Markdown, OpenAPI (em desenvolvimento)
+- **API**: Fetch API para comunicação cliente-servidor assíncrona
+- **Documentação**: Markdown, HTML
 
 ## API Endpoints
 
 A API oferece endpoints para gerenciamento completo do sistema. Principais recursos:
 
-- **Usuários**: `/usuarios` - Gerenciamento de estudantes e administradores
-- **Salas**: `/salas` - Gerenciamento de salas de estudo e cabines
-- **Tipos de Sala**: `/tipos-sala` - Categorização dos espaços
-- **Reservas**: `/reservas` - Agendamento e controle de reservas
+- **Salas**:
+
+  - `GET /api/salas` - Listar todas as salas disponíveis
+  - `GET /salas-view` - Visualização HTML das salas
+
+- **Reservas**:
+  - `GET /reservas-view` - Interface de gerenciamento de reservas
+  - `GET /api/reservas` - Listar todas as reservas
+  - `POST /api/reservas` - Criar nova reserva
+  - `PUT /api/reservas/:id` - Atualizar reserva existente
+  - `DELETE /api/reservas/:id` - Cancelar uma reserva
 
 Para a documentação completa dos endpoints, consulte o arquivo [`docs/wad.md`](./docs/wad.md).
 
@@ -106,7 +119,7 @@ Para a documentação completa dos endpoints, consulte o arquivo [`docs/wad.md`]
   - Arquitetura Web (WAD): [`docs/wad.md`](./docs/wad.md)
   - Documentação HTML: `public/documentacao-reservas.html` (versão navegável)
 - **Modelo de Dados**
-  - Diagrama: `assets/banco-salas.pdf` e `assets/banco-salas.svg`
+  - Diagrama: `assets/banco-salas.svg`
 
 ## Estrutura de Pastas e Arquivos
 
@@ -145,12 +158,9 @@ Para a documentação completa dos endpoints, consulte o arquivo [`docs/wad.md`]
 O sistema utiliza um banco de dados relacional com as seguintes entidades principais:
 
 - **Users**: Armazena informações dos usuários (estudantes, professores e administradores)
-- **Rooms**: Armazena informações sobre as salas de reunião (R01 até R10)
-- **Reservations**: Registra cada reserva realizada pelos usuários
+- **Salas**: Armazena informações sobre as 7 salas de reunião
+- **Reservas**: Registra cada reserva realizada pelos usuários
 - **RoomFeatures**: Características específicas de cada sala (capacidade, recursos disponíveis)
-- **ReservationTypes**: Categoriza os tipos de reserva (reunião, mentoria, grupo de estudo, etc.)
-- **Notifications**: Sistema de notificação para alertar usuários sobre suas reservas
-- **Tarefas**: (CRUD de tarefas para exemplo de uso da API)
 
 O diagrama do banco de dados está disponível em <a href="./assets/banco-salas.pdf">`assets/banco-salas.pdf`</a>.<br>
 
@@ -268,12 +278,16 @@ Exemplo de endpoints:
 
 Veja exemplos de requisições no arquivo `rest.http` ou utilize o Postman para enviar requisições HTTP.
 
-## Requisitos Mínimos Atendidos
+## Requisitos Implementados
 
 - [x] Criação do banco de dados PostgreSQL e conexão
 - [x] Migração funcional (`scripts/init.sql`)
-- [x] Implementação de Models (SQL e arquivos em `models/`)
-- [x] Implementação de Controllers (`controllers/`)
-- [x] Rotas funcionando (`routes/`)
-- [x] Arquitetura MVC completa (Models, Views [API], Controllers)
-- [x] Documentação completa (este README e docs/wad.md)
+- [x] Interface de usuário com EJS, CSS e JavaScript
+- [x] Implementação de Models (SQL)
+- [x] Implementação de Controllers (lógica de negócio)
+- [x] Rotas funcionando (API e visualizações)
+- [x] Comunicação assíncrona cliente-servidor via Fetch API
+- [x] Arquitetura MVC completa (Models, Views, Controllers)
+- [x] Interface responsiva e atraente
+- [x] Validações e feedback ao usuário
+- [x] Documentação completa

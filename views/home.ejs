@@ -103,6 +103,12 @@
         border-radius: 6px;
         padding: 5px 15px;
       }
+      .button-container {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 30px;
+      }
     </style>
   </head>
   <body>
@@ -152,9 +158,10 @@
         </div>
       </div>
 
-      <a href="/reservas-view" class="btn-primary"
-        >Acessar Sistema de Reservas</a
-      >
+      <div class="button-container">
+        <a href="/salas-view" class="btn-primary">Ver Salas Disponíveis</a>
+        <a href="/reservas-view" class="btn-primary">Gerenciar Reservas</a>
+      </div>
     </div>
   </body>
 </html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Salas Disponíveis - Sistema de Reservas</title>
+    <style>
+      :root {
+        --primary: #1e3c72;
+        --secondary: #2a5298;
+        --light-blue: #e6f0ff;
+        --medium-blue: #c5d8f7;
+        --accent: #3a6eff;
+        --text: #333;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f5ff;
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 20px;
+      }
+
+      header {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 30px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 32px;
+      }
+
+      .rooms-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+
+      .room-card {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .room-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .room-image {
+        height: 150px;
+        background-color: var(--light-blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .room-info {
+        padding: 20px;
+      }
+
+      .room-info h3 {
+        margin-top: 0;
+        color: var(--primary);
+        font-size: 18px;
+      }
+
+      .room-info p {
+        margin: 8px 0;
+        color: var(--text);
+      }
+
+      .room-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 15px;
+      }
+
+      .feature {
+        background-color: var(--light-blue);
+        color: var(--primary);
+        padding: 4px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+      }
+
+      .reserve-btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 0 0 8px 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        transition: background-color 0.3s;
+      }
+
+      .reserve-btn:hover {
+        background-color: var(--primary);
+      }
+
+      .filter-section {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .filter-title {
+        margin-top: 0;
+        color: var(--primary);
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+
+      .filter-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+      }
+
+      .filter-group {
+        margin-bottom: 15px;
+      }
+
+      .filter-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: var(--secondary);
+      }
+
+      .filter-group select,
+      .filter-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .filter-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      .filter-btn {
+        padding: 10px 15px;
+        background-color: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .clear-btn {
+        background-color: #ccc;
+      }
+
+      .navigation {
+        margin-top: 30px;
+        text-align: center;
+      }
+
+      .home-link {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: var(--light-blue);
+        color: var(--primary);
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+
+      .home-link:hover {
+        background-color: var(--medium-blue);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Salas Disponíveis</h1>
+      </header>
+
+      <div class="filter-section">
+        <h2 class="filter-title">Filtrar Salas</h2>
+        <div class="filter-form">
+          <div class="filter-group">
+            <label for="capacidade">Capacidade mínima:</label>
+            <input type="number" id="capacidade" min="1" value="1" />
+          </div>
+          <div class="filter-group">
+            <label for="dataReserva">Data para reserva:</label>
+            <input type="date" id="dataReserva" />
+          </div>
+          <div class="filter-buttons">
+            <button class="filter-btn" id="aplicarFiltro">
+              Aplicar Filtro
+            </button>
+            <button class="filter-btn clear-btn" id="limparFiltro">
+              Limpar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="rooms-container" id="roomList">
+        <!-- Salas serão carregadas dinamicamente via JavaScript -->
+        <% if (salas && salas.length > 0) { %> <% salas.forEach(function(sala) {
+        %>
+        <div class="room-card">
+          <div class="room-image"><%= sala.nome %></div>
+          <div class="room-info">
+            <h3><%= sala.nome %></h3>
+            <p><strong>Capacidade:</strong> <%= sala.capacidade %> pessoas</p>
+            <p><strong>Localização:</strong> <%= sala.localizacao %></p>
+            <div class="room-features">
+              <% if (sala.recursos) { const recursos = sala.recursos.split(',');
+              recursos.forEach(function(recurso) { %>
+              <span class="feature"><%= recurso.trim() %></span>
+              <% }); } %>
+            </div>
+          </div>
+          <button class="reserve-btn" data-id="<%= sala.id %>">Reservar</button>
+        </div>
+        <% }); %> <% } else { %>
+        <p>Nenhuma sala disponível no momento.</p>
+        <% } %>
+      </div>
+
+      <div class="navigation">
+        <a href="/" class="home-link">Voltar para página inicial</a>
+      </div>
+    </div>
+
+    <script src="/js/salas.js"></script>
+  </body>
+</html>

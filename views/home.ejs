@@ -6,71 +6,155 @@
     <title><%= titulo %></title>
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         line-height: 1.6;
         margin: 0;
-        padding: 20px;
-        background-color: #f5f5f5;
+        padding: 0;
+        background-color: #f0f5ff;
+        color: #333;
       }
       .container {
-        max-width: 800px;
-        margin: 0 auto;
+        max-width: 900px;
+        margin: 30px auto;
         background: white;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      header {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        padding: 20px 30px;
+        margin: -30px -30px 30px -30px;
+        border-radius: 10px 10px 0 0;
+        text-align: center;
       }
       h1 {
-        color: #333;
-        border-bottom: 2px solid #ddd;
-        padding-bottom: 10px;
+        margin: 0;
+        font-size: 32px;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       }
       .card {
-        background: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 15px;
-        margin-bottom: 15px;
+        background: #f9fbff;
+        border-left: 4px solid #3a6eff;
+        border-radius: 6px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+      .card:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
+      .card h2 {
+        color: #1e3c72;
+        margin-top: 0;
+        font-size: 24px;
+      }
+      .card h3 {
+        color: #2a5298;
+        margin-top: 0;
+        font-size: 20px;
+        border-bottom: 1px solid #e1e8ff;
+        padding-bottom: 10px;
       }
       .code {
-        background: #f0f0f0;
-        border: 1px solid #ccc;
-        padding: 10px;
-        border-radius: 3px;
-        font-family: monospace;
+        background: #eef2ff;
+        border: 1px solid #d0d9ff;
+        padding: 15px;
+        border-radius: 5px;
+        font-family: "Courier New", monospace;
         overflow-x: auto;
+        color: #2a5298;
+      }
+      ul {
+        padding-left: 20px;
+      }
+      li {
+        margin-bottom: 8px;
+      }
+      strong {
+        color: #1e3c72;
+      }
+      .btn-primary {
+        display: block;
+        background: linear-gradient(135deg, #3a6eff, #1e3c72);
+        color: white;
+        text-decoration: none;
+        padding: 15px 30px;
+        border-radius: 50px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 30px auto 10px;
+        max-width: 400px;
+        box-shadow: 0 4px 15px rgba(42, 82, 152, 0.3);
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #4a7eff, #2a5298);
+        box-shadow: 0 6px 20px rgba(42, 82, 152, 0.4);
+        transform: translateY(-2px);
+      }
+      .api-endpoints {
+        background-color: #e6edff;
+        border-radius: 6px;
+        padding: 5px 15px;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1><%= titulo %></h1>
+      <header>
+        <h1><%= titulo %></h1>
+      </header>
 
       <div class="card">
         <h2><%= mensagem %></h2>
-        <p>Este é o sistema de gerenciamento de reservas de salas do Inteli.</p>
+        <p>
+          Este é o sistema de gerenciamento de reservas de salas do Inteli. Use
+          nossa plataforma para agendar salas para reuniões, estudos e eventos
+          de forma simples e eficiente.
+        </p>
       </div>
 
       <div class="card">
         <h3>Configuração do Banco de Dados</h3>
-          <p>Para criar as tabelas necessárias, execute o script de inicialização usando:</p>
+        <p>
+          Para criar as tabelas necessárias, execute o script de inicialização
+          usando:
+        </p>
         <div class="code">node scripts/runSQLScript.js</div>
       </div>
 
       <div class="card">
-        <h3>Endpoints Disponíveis</h3>
-        <ul>
-          <li><strong>GET /api/reservas</strong> - Listar todas as reservas</li>
-          <li><strong>POST /api/reservas</strong> - Criar nova reserva</li>
-          <li><strong>PUT /api/reservas/:id</strong> - Atualizar reserva</li>
-          <li><strong>DELETE /api/reservas/:id</strong> - Cancelar reserva</li>
-          <li><strong>GET /api/reservas/usuario/:nome</strong> - Listar reservas de um usuário</li>
-          <li><strong>GET /api/reservas/salas</strong> - Listar todas as salas</li>
-        </ul>
-        <p>
-          Acesse <a href="/reservas-view">Sistema de Reserva de Salas</a> para gerenciar reservas.
-        </p>
+        <h3>Endpoints da API</h3>
+        <div class="api-endpoints">
+          <ul>
+            <li>
+              <strong>GET /api/reservas</strong> - Listar todas as reservas
+            </li>
+            <li><strong>POST /api/reservas</strong> - Criar nova reserva</li>
+            <li><strong>PUT /api/reservas/:id</strong> - Atualizar reserva</li>
+            <li>
+              <strong>DELETE /api/reservas/:id</strong> - Cancelar reserva
+            </li>
+            <li>
+              <strong>GET /api/reservas/usuario/:nome</strong> - Listar reservas
+              de um usuário
+            </li>
+            <li>
+              <strong>GET /api/reservas/salas</strong> - Listar todas as salas
+            </li>
+          </ul>
+        </div>
       </div>
+
+      <a href="/reservas-view" class="btn-primary"
+        >Acessar Sistema de Reservas</a
+      >
     </div>
   </body>
 </html>

@@ -5,118 +5,347 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
+      :root {
+        --primary: #1e3c72;
+        --secondary: #2a5298;
+        --light-blue: #e6f0ff;
+        --medium-blue: #c5d8f7;
+        --accent: #3a6eff;
+        --text: #333;
+        --light-text: #666;
+        --success: #4caf50;
+        --danger: #f44336;
+        --warning: #ff9800;
+      }
+
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         line-height: 1.6;
         margin: 0;
-        padding: 20px;
-        background-color: #f5f5f5;
+        padding: 0;
+        background-color: #f0f5ff;
+        color: var(--text);
       }
+
       .container {
         max-width: 1200px;
-        margin: 0 auto;
+        margin: 20px auto;
         background: white;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
+
       h1 {
-        color: #333;
-        border-bottom: 2px solid #ddd;
-        padding-bottom: 10px;
+        color: var(--primary);
+        margin-top: 0;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--medium-blue);
+        font-size: 28px;
       }
+
+      h2 {
+        color: var(--secondary);
+        font-size: 22px;
+        margin-top: 0;
+      }
+
       .erro {
-        color: red;
+        color: var(--danger);
         background-color: #ffeeee;
-        padding: 10px;
-        border: 1px solid #ffcccc;
+        padding: 12px;
+        border-left: 4px solid var(--danger);
         border-radius: 4px;
         margin-bottom: 20px;
       }
+
       .success {
-        color: green;
+        color: var(--success);
         background-color: #eeffee;
-        padding: 10px;
-        border: 1px solid #ccffcc;
+        padding: 12px;
+        border-left: 4px solid var(--success);
         border-radius: 4px;
         margin-bottom: 20px;
       }
+
       table {
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-radius: 5px;
+        overflow: hidden;
       }
-      table,
+
       th,
       td {
-        border: 1px solid #ddd;
-      }
-      th,
-      td {
-        padding: 12px;
+        padding: 12px 15px;
         text-align: left;
       }
+
       th {
-        background-color: #f2f2f2;
-        font-weight: bold;
+        background-color: var(--primary);
+        color: white;
+        font-weight: 500;
       }
+
+      tr:nth-child(even) {
+        background-color: var(--light-blue);
+      }
+
       tr:hover {
-        background-color: #f5f5f5;
+        background-color: var(--medium-blue);
       }
+
+      td {
+        border-bottom: 1px solid #ddd;
+      }
+
       .form-section {
-        background-color: #f9f9f9;
-        padding: 20px;
-        border-radius: 5px;
+        background-color: var(--light-blue);
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border-top: 4px solid var(--primary);
+      }
+
+      .form-group {
         margin-bottom: 20px;
       }
-      .form-group {
-        margin-bottom: 15px;
-      }
+
       label {
         display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--secondary);
       }
+
       input,
       select,
       textarea {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         border: 1px solid #ddd;
-        border-radius: 4px;
+        border-radius: 6px;
+        font-size: 15px;
+        transition: all 0.3s ease;
       }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(58, 110, 255, 0.2);
+        outline: none;
+      }
+
       button {
-        background-color: #4caf50;
+        background-color: var(--primary);
         color: white;
         border: none;
-        padding: 10px 15px;
+        padding: 12px 20px;
         cursor: pointer;
-        border-radius: 4px;
+        border-radius: 6px;
+        font-size: 15px;
+        font-weight: 500;
+        transition: all 0.3s ease;
       }
+
       button:hover {
-        background-color: #45a049;
+        background-color: var(--secondary);
+        transform: translateY(-1px);
       }
+
       .actions {
         display: flex;
         gap: 10px;
       }
+
       .btn-edit {
-        background-color: #2196f3;
+        background-color: var(--accent);
       }
+
       .btn-edit:hover {
-        background-color: #0b7dda;
+        background-color: #2957dd;
       }
+
       .btn-delete {
-        background-color: #f44336;
+        background-color: var(--danger);
       }
+
       .btn-delete:hover {
-        background-color: #da190b;
+        background-color: #d32f2f;
       }
+
       .filter-section {
-        margin-bottom: 20px;
+        background-color: white;
+        margin-bottom: 30px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid var(--accent);
+      }
+
+      .date-time-selection {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .time-slot {
         padding: 10px;
-        background-color: #eee;
+        border: 1px solid #ddd;
         border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s ease;
+      }
+
+      .time-slot:hover {
+        border-color: var(--accent);
+        background-color: var(--light-blue);
+      }
+
+      .time-slot.selected {
+        background-color: var(--accent);
+        color: white;
+        border-color: var(--accent);
+      }
+
+      .time-slot.unavailable {
+        background-color: #f9f9f9;
+        color: #aaa;
+        cursor: not-allowed;
+        border-color: #eee;
+      }
+
+      .date-selection {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .date-option {
+        padding: 8px 15px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .date-option:hover {
+        border-color: var(--accent);
+        background-color: var(--light-blue);
+      }
+
+      .date-option.selected {
+        background-color: var(--accent);
+        color: white;
+        border-color: var(--accent);
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .home-link {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 8px 15px;
+        background-color: var(--light-blue);
+        border-radius: 20px;
+        transition: all 0.2s ease;
+      }
+
+      .home-link:hover {
+        background-color: var(--medium-blue);
+        text-decoration: none;
+      }
+
+      .hidden-inputs {
+        display: none;
+      }
+
+      /* Adicionar estilos para o modal de confirmação */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        position: relative;
+        animation: slideDown 0.3s ease;
+      }
+
+      @keyframes slideDown {
+        from {
+          transform: translateY(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #999;
+        transition: color 0.2s;
+      }
+
+      .close-modal:hover {
+        color: var(--danger);
+      }
+
+      .modal-icon {
+        font-size: 50px;
+        color: var(--success);
+        margin-bottom: 15px;
+      }
+
+      .modal-title {
+        font-size: 22px;
+        color: var(--primary);
+        margin-bottom: 10px;
+      }
+
+      .modal-message {
+        margin-bottom: 20px;
+        color: var(--text);
+      }
+
+      .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
       }
     </style>
   </head>
@@ -137,13 +366,13 @@
             <label for="sala">Sala:</label>
             <select id="sala" name="sala_id" required>
               <option value="">Selecione uma sala</option>
-              <% if (salas && salas.length > 0) { %>
-                <% salas.forEach(function(sala) { %>
-                  <option value="<%= sala.id %>">
-                    <%= sala.nome %> (Cap: <%= sala.capacidade %>) - <%= sala.localizacao %>
-                  </option>
-                <% }); %>
-              <% } %>
+              <% if (salas && salas.length > 0) { %> <%
+              salas.forEach(function(sala) { %>
+              <option value="<%= sala.id %>">
+                <%= sala.nome %> (Cap: <%= sala.capacidade %>) - <%=
+                sala.localizacao %>
+              </option>
+              <% }); %> <% } %>
             </select>
           </div>
 
@@ -153,17 +382,23 @@
           </div>
 
           <div class="form-group">
-            <label for="data_inicio">Data e Hora de Início:</label>
+            <label>Data da Reserva:</label>
+            <div class="date-selection" id="dateSelection"></div>
+          </div>
+
+          <div class="form-group">
+            <label>Horários Disponíveis:</label>
+            <div class="time-slot-selection" id="timeSlotSelection"></div>
+          </div>
+
+          <!-- Campos ocultos para armazenar data/hora -->
+          <div class="hidden-inputs">
             <input
               type="datetime-local"
               id="data_inicio"
               name="data_inicio"
               required
             />
-          </div>
-
-          <div class="form-group">
-            <label for="data_fim">Data e Hora de Término:</label>
             <input
               type="datetime-local"
               id="data_fim"
@@ -174,7 +409,12 @@
 
           <div class="form-group">
             <label for="proposito">Propósito da Reserva:</label>
-            <textarea id="proposito" name="proposito" rows="3"></textarea>
+            <textarea
+              id="proposito"
+              name="proposito"
+              rows="3"
+              placeholder="Descreva brevemente o propósito da sua reserva"
+            ></textarea>
           </div>
 
           <button type="submit">Reservar Sala</button>
@@ -235,13 +475,13 @@
             <td class="actions">
               <button
                 class="btn-edit"
-                onclick="editReservation(reserva.id)"
+                onclick="editReservation('<%= reserva.id %>')"
               >
                 Editar
               </button>
               <button
                 class="btn-delete"
-                onclick="deleteReservation(reserva.id)"
+                onclick="deleteReservation('<%= reserva.id %>')"
               >
                 Cancelar
               </button>
@@ -254,10 +494,152 @@
       <p>Nenhuma reserva disponível no momento.</p>
       <% } %>
 
-      <a href="/">Voltar para página inicial</a>
+      <a href="/" class="home-link">Voltar para página inicial</a>
+    </div>
+
+    <div id="confirmationModal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div class="modal-icon">✓</div>
+        <h3 class="modal-title">Reserva Confirmada</h3>
+        <p class="modal-message">Sua reserva foi realizada com sucesso!</p>
+        <div class="modal-buttons">
+          <button id="closeModal" class="btn-primary">OK</button>
+        </div>
+      </div>
     </div>
 
     <script>
+      // Definir data atual e criar datas futuras
+      const currentYear = 2025; // Simulando que estamos em 2025
+      const currentDate = new Date(currentYear, 0, 1); // 1 de Janeiro de 2025
+
+      // Gerar datas para os próximos 14 dias
+      function generateDateOptions() {
+        const dateSelection = document.getElementById("dateSelection");
+        dateSelection.innerHTML = "";
+
+        for (let i = 0; i < 14; i++) {
+          const date = new Date(currentDate);
+          date.setDate(date.getDate() + i);
+
+          const dateOption = document.createElement("div");
+          dateOption.classList.add("date-option");
+          dateOption.dataset.date = formatDateValue(date);
+
+          const dayOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"][
+            date.getDay()
+          ];
+          const day = date.getDate();
+          const month = date.getMonth() + 1;
+
+          dateOption.innerHTML = `${dayOfWeek}, ${day}/${month}`;
+          dateOption.addEventListener("click", selectDate);
+
+          dateSelection.appendChild(dateOption);
+        }
+      }
+
+      // Gerar opções de horário
+      function generateTimeSlots(selectedDate) {
+        const timeSlotSelection = document.getElementById("timeSlotSelection");
+        timeSlotSelection.innerHTML = "";
+
+        // Horários disponíveis (em intervalos de 1 hora)
+        const availableSlots = [
+          { start: "08:00", end: "09:00" },
+          { start: "09:00", end: "10:00" },
+          { start: "10:00", end: "11:00" },
+          { start: "11:00", end: "12:00" },
+          { start: "13:00", end: "14:00" },
+          { start: "14:00", end: "15:00" },
+          { start: "15:00", end: "16:00" },
+          { start: "16:00", end: "17:00" },
+          { start: "17:00", end: "18:00" },
+        ];
+
+        availableSlots.forEach((slot) => {
+          const timeSlot = document.createElement("div");
+          timeSlot.classList.add("time-slot");
+          timeSlot.dataset.startTime = slot.start;
+          timeSlot.dataset.endTime = slot.end;
+          timeSlot.innerHTML = `${slot.start} - ${slot.end}`;
+
+          // Verificar se o horário está disponível (simulado)
+          // Aqui você pode adicionar lógica para verificar reservas existentes
+          const isAvailable = Math.random() > 0.3; // Simulação: 70% disponível
+
+          if (!isAvailable) {
+            timeSlot.classList.add("unavailable");
+          } else {
+            timeSlot.addEventListener("click", selectTimeSlot);
+          }
+
+          timeSlotSelection.appendChild(timeSlot);
+        });
+      }
+
+      // Selecionar uma data
+      function selectDate(e) {
+        // Limpar seleções anteriores
+        document.querySelectorAll(".date-option.selected").forEach((el) => {
+          el.classList.remove("selected");
+        });
+
+        e.target.classList.add("selected");
+        const selectedDate = e.target.dataset.date;
+
+        // Gerar horários disponíveis para esta data
+        generateTimeSlots(selectedDate);
+
+        // Limpar seleção de horário
+        document.querySelectorAll(".time-slot.selected").forEach((el) => {
+          el.classList.remove("selected");
+        });
+
+        // Limpar campos de data/hora
+        document.getElementById("data_inicio").value = "";
+        document.getElementById("data_fim").value = "";
+      }
+
+      // Selecionar um horário
+      function selectTimeSlot(e) {
+        // Evitar seleção de slots indisponíveis
+        if (e.target.classList.contains("unavailable")) {
+          return;
+        }
+
+        // Limpar seleções anteriores
+        document.querySelectorAll(".time-slot.selected").forEach((el) => {
+          el.classList.remove("selected");
+        });
+
+        e.target.classList.add("selected");
+
+        // Preencher campos ocultos de data/hora
+        const selectedDateEl = document.querySelector(".date-option.selected");
+        if (!selectedDateEl) return;
+
+        const selectedDate = selectedDateEl.dataset.date;
+        const startTime = e.target.dataset.startTime;
+        const endTime = e.target.dataset.endTime;
+
+        document.getElementById(
+          "data_inicio"
+        ).value = `${selectedDate}T${startTime}`;
+        document.getElementById(
+          "data_fim"
+        ).value = `${selectedDate}T${endTime}`;
+      }
+
+      // Formatar data para valor de input
+      function formatDateValue(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
       // Função para formatar data para input datetime-local
       function formatDateForInput(dateString) {
         if (!dateString) return "";
@@ -293,6 +675,8 @@
           document.getElementById("usuario_nome").value = row.dataset.usuario;
           document.getElementById("proposito").value =
             row.dataset.proposito || "";
+
+          // Preencher campos ocultos diretamente - na edição não usamos os seletores visuais
           document.getElementById("data_inicio").value = formatDateForInput(
             row.dataset.inicio
           );
@@ -318,29 +702,44 @@
 
           // Mostrar botão de cancelar edição
           document.getElementById("cancelEdit").style.display = "";
+
+          // Rolar para o formulário
+          document
+            .querySelector(".form-section")
+            .scrollIntoView({ behavior: "smooth" });
         } catch (e) {
           console.error("Erro ao editar reserva:", e);
         }
       }
 
       // Cancelar edição
-      document.getElementById("cancelEdit").addEventListener("click", function () {
-        const form = document.getElementById("reservationForm");
-        form.action = "/api/reservas";
-        form.setAttribute("method", "post");
-        document.getElementById("reservationId").value = "";
-        document.getElementById("sala").value = "";
-        document.getElementById("usuario_nome").value = "";
-        document.getElementById("proposito").value = "";
-        document.getElementById("data_inicio").value = "";
-        document.getElementById("data_fim").value = "";
-        // Remover campo _method se existir
-        let methodInput = document.getElementById("_method");
-        if (methodInput) {
-          methodInput.remove();
-        }
-        this.style.display = "none";
-      });
+      document
+        .getElementById("cancelEdit")
+        .addEventListener("click", function () {
+          const form = document.getElementById("reservationForm");
+          form.action = "/api/reservas";
+          form.setAttribute("method", "post");
+          document.getElementById("reservationId").value = "";
+          document.getElementById("sala").value = "";
+          document.getElementById("usuario_nome").value = "";
+          document.getElementById("proposito").value = "";
+          document.getElementById("data_inicio").value = "";
+          document.getElementById("data_fim").value = "";
+
+          // Limpar seleções de data e hora
+          document
+            .querySelectorAll(".date-option.selected, .time-slot.selected")
+            .forEach((el) => {
+              el.classList.remove("selected");
+            });
+
+          // Remover campo _method se existir
+          let methodInput = document.getElementById("_method");
+          if (methodInput) {
+            methodInput.remove();
+          }
+          this.style.display = "none";
+        });
 
       // Deletar reserva
       function deleteReservation(id) {
@@ -365,21 +764,154 @@
       }
 
       // Filtro por nome
-      document.getElementById("filterButton").addEventListener("click", function () {
-        const filterName = document.getElementById("filterName").value.trim().toLowerCase();
-        const rows = document.querySelectorAll("tbody tr");
-        rows.forEach((row) => {
-          const usuario = (row.dataset.usuario || "").toLowerCase();
-          row.style.display = filterName && !usuario.includes(filterName) ? "none" : "";
+      document
+        .getElementById("filterButton")
+        .addEventListener("click", function () {
+          const filterName = document
+            .getElementById("filterName")
+            .value.trim()
+            .toLowerCase();
+          const rows = document.querySelectorAll("tbody tr");
+          rows.forEach((row) => {
+            const usuario = (row.dataset.usuario || "").toLowerCase();
+            row.style.display =
+              filterName && !usuario.includes(filterName) ? "none" : "";
+          });
         });
-      });
 
       // Limpar filtro
-      document.getElementById("clearFilter").addEventListener("click", function () {
-        document.getElementById("filterName").value = "";
-        const rows = document.querySelectorAll("tbody tr");
-        rows.forEach((row) => (row.style.display = ""));
+      document
+        .getElementById("clearFilter")
+        .addEventListener("click", function () {
+          document.getElementById("filterName").value = "";
+          const rows = document.querySelectorAll("tbody tr");
+          rows.forEach((row) => (row.style.display = ""));
+        });
+
+      // Inicializar ao carregar a página
+      document.addEventListener("DOMContentLoaded", function () {
+        generateDateOptions();
       });
+
+      // Modificar o envio do formulário para usar AJAX em vez de redirecionar
+      document
+        .getElementById("reservationForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault(); // Impede o envio tradicional do formulário
+
+          const form = this;
+          const formData = new FormData(form);
+          const url = form.getAttribute("action");
+          const method = form.getAttribute("method");
+
+          // Converter FormData para um objeto simples
+          const data = {};
+          formData.forEach((value, key) => {
+            data[key] = value;
+          });
+
+          // Fazer a requisição usando fetch API
+          fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+              "X-HTTP-Method-Override":
+                document.getElementById("_method")?.value || "",
+            },
+            body: JSON.stringify(data),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Erro ao processar reserva");
+              }
+              return response.json();
+            })
+            .then((result) => {
+              // Mostrar modal de confirmação
+              showModal(
+                "Reserva Confirmada",
+                "Sua reserva foi realizada com sucesso!"
+              );
+
+              // Limpar formulário
+              resetForm();
+
+              // Após 2 segundos, recarregar a página para atualizar a lista
+              setTimeout(() => {
+                location.reload();
+              }, 2000);
+            })
+            .catch((error) => {
+              console.error("Erro:", error);
+              showModal(
+                "Erro",
+                "Ocorreu um erro ao processar sua reserva. Por favor, tente novamente.",
+                true
+              );
+            });
+        });
+
+      // Função para exibir o modal
+      function showModal(title, message, isError = false) {
+        const modal = document.getElementById("confirmationModal");
+        const modalTitle = modal.querySelector(".modal-title");
+        const modalMessage = modal.querySelector(".modal-message");
+        const modalIcon = modal.querySelector(".modal-icon");
+
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+
+        if (isError) {
+          modalIcon.textContent = "✕";
+          modalIcon.style.color = "var(--danger)";
+        } else {
+          modalIcon.textContent = "✓";
+          modalIcon.style.color = "var(--success)";
+        }
+
+        modal.style.display = "flex";
+      }
+
+      // Fechar o modal ao clicar no botão de fechar
+      document
+        .querySelector(".close-modal")
+        .addEventListener("click", function () {
+          document.getElementById("confirmationModal").style.display = "none";
+        });
+
+      // Fechar o modal ao clicar no botão OK
+      document
+        .getElementById("closeModal")
+        .addEventListener("click", function () {
+          document.getElementById("confirmationModal").style.display = "none";
+        });
+
+      // Resetar o formulário
+      function resetForm() {
+        const form = document.getElementById("reservationForm");
+        form.reset();
+        document.getElementById("reservationId").value = "";
+        document.getElementById("data_inicio").value = "";
+        document.getElementById("data_fim").value = "";
+
+        // Limpar seleções de data e hora
+        document
+          .querySelectorAll(".date-option.selected, .time-slot.selected")
+          .forEach((el) => {
+            el.classList.remove("selected");
+          });
+
+        // Se estiver em modo de edição, voltar para modo de criação
+        form.action = "/api/reservas";
+        form.setAttribute("method", "post");
+        document.getElementById("cancelEdit").style.display = "none";
+
+        // Remover campo _method se existir
+        let methodInput = document.getElementById("_method");
+        if (methodInput) {
+          methodInput.remove();
+        }
+      }
     </script>
   </body>
 </html>

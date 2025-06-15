@@ -4,47 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Salas Disponíveis - Sistema de Reservas</title>
-    <style>
-      :root {
-        --primary: #1e3c72;
-        --secondary: #2a5298;
-        --light-blue: #e6f0ff;
-        --medium-blue: #c5d8f7;
-        --accent: #3a6eff;
-        --text: #333;
-      }
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/salas.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Salas Disponíveis</h1>
+      </header>
 
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        line-height: 1.6;
-        margin: 0;
-        padding: 0;
-        background-color: #f0f5ff;
-        color: var(--text);
-      }
+      <div class="rooms-container" id="roomList">
+        <!-- Salas serão carregadas dinamicamente via JavaScript -->
+        <% if (salas && salas.length > 0) { %> <% salas.forEach(function(sala) {
+        %>
+        <div class="room-card">
+          <div class="room-image"><%= sala.nome %></div>
+          <div class="room-info">
+            <h3><%= sala.nome %></h3>
+            <p><strong>Capacidade:</strong> <%= sala.capacidade %> pessoas</p>
+            <p><strong>Localização:</strong> <%= sala.localizacao %></p>
+            <div class="room-features">
+              <% if (sala.recursos) { const recursos = sala.recursos.split(',');
+              recursos.forEach(function(recurso) { %>
+              <span class="feature"><%= recurso.trim() %></span>
+              <% }); } %>
+            </div>
+          </div>
+          <button class="reserve-btn" data-id="<%= sala.id %>">Disponível</button>
+        </div>
+        <% }); %> <% } else { %>
+        <p>Nenhuma sala disponível no momento.</p>
+        <% } %>
+      </div>
 
-      .container {
-        max-width: 1200px;
-        margin: 20px auto;
-        padding: 0 20px;
-      }
+      <div class="navigation">
+        <a href="/" class="home-link">Voltar para página inicial</a>
+      </div>
+    </div>
 
-      header {
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
-        color: white;
-        padding: 20px 0;
-        text-align: center;
-        border-radius: 8px 8px 0 0;
-        margin-bottom: 30px;
-      }
-
-      h1 {
-        margin: 0;
-        font-size: 32px;
-      }
-
-      .rooms-container {
-        display: grid;
+    <script src="/js/salas.js"></script>
+  </body>
+</html>
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 20px;
       }

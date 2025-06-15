@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../config/database");
+const {
+  validateReserva,
+  validateReservaUpdate,
+} = require("../models/ReservaValidation");
 
 // Get all reservations
 router.get("/", async (req, res) => {
@@ -41,22 +45,49 @@ router.get("/usuario/:nome", async (req, res) => {
 // Create a new reservation
 router.post("/", async (req, res) => {
   try {
-    console.log("Creating new reservation:", req.body);
-    const { sala_id, usuario_nome, data_inicio, data_fim, proposito } =
-      req.body;
+    // Validar dados da reserva
+    const { error, value } = validateReserva(req.body);
+    if (error) {
+      return res.status(400).json({
+        error: "Dados inválidos",
+        details: error.details.map((d) => d.message),
+      });
+    }
 
-    // Validate required fields
-    if (!sala_id || !usuario_nome || !data_inicio || !data_fim) {
+    const { sala_id, usuario_nome, data_inicio, data_fim, proposito } = value;
+
+    // Verificar disponibilidade da sala
+    const conflito = await pool.query(
+      `SELECT id FROM reservas 
+       WHERE sala_id = $1 
+       AND status = 'confirmada'
+       AND ((data_inicio <= $2 AND data_fim >= $2) OR 
+            (data_inicio <= $3 AND data_fim >= $3) OR
+            (data_inicio >= $2 AND data_fim <= $3))`,
+      [sala_id, data_inicio, data_fim]
+    );
+
+    if (conflito.rows.length > 0) {
       return res
-        .status(400)
-        .json({ error: "Todos os campos obrigatórios devem ser preenchidos" });
+        .status(409)
+        .json({ error: "Sala já reservada para este horário" });
     }
 
     const result = await pool.query(
       "INSERT INTO reservas (sala_id, usuario_nome, data_inicio, data_fim, proposito) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [sala_id, usuario_nome, data_inicio, data_fim, proposito]
     );
-    res.status(201).json(result.rows[0]);
+
+    // Obter o nome da sala para retornar uma resposta mais completa
+    const salaInfo = await pool.query("SELECT nome FROM salas WHERE id = $1", [
+      sala_id,
+    ]);
+    const reservaCompleta = {
+      ...result.rows[0],
+      sala_nome: salaInfo.rows[0]?.nome || "Sala desconhecida",
+    };
+
+    res.status(201).json(reservaCompleta);
   } catch (err) {
     console.error("Error creating reservation:", err);
     res.status(500).json({ error: err.message });
@@ -66,36 +97,121 @@ router.post("/", async (req, res) => {
 // Update a reservation
 router.put("/:id", async (req, res) => {
   try {
-    console.log("Updating reservation:", req.params.id, req.body);
     const { id } = req.params;
-    const { sala_id, usuario_nome, data_inicio, data_fim, proposito, status } =
-      req.body;
 
-    // Validate required fields
-    if (!sala_id || !usuario_nome || !data_inicio || !data_fim) {
-      return res
-        .status(400)
-        .json({ error: "Todos os campos obrigatórios devem ser preenchidos" });
+    // Validar dados da atualização
+    const { error, value } = validateReservaUpdate(req.body);
+    if (error) {
+      return res.status(400).json({
+        error: "Dados inválidos",
+        details: error.details.map((d) => d.message),
+      });
     }
 
-    const result = await pool.query(
-      "UPDATE reservas SET sala_id = $1, usuario_nome = $2, data_inicio = $3, data_fim = $4, proposito = $5, status = $6, updated_at = CURRENT_TIMESTAMP WHERE id = $7 RETURNING *",
-      [
-        sala_id,
-        usuario_nome,
-        data_inicio,
-        data_fim,
-        proposito,
-        status || "confirmada",
-        id,
-      ]
-    );
+    const { sala_id, usuario_nome, data_inicio, data_fim, proposito, status } =
+      value;
 
-    if (result.rows.length === 0) {
+    // Verificar se a reserva existe
+    const reservaExistente = await pool.query(
+      "SELECT * FROM reservas WHERE id = $1",
+      [id]
+    );
+    if (reservaExistente.rows.length === 0) {
       return res.status(404).json({ error: "Reserva não encontrada" });
     }
 
-    res.json(result.rows[0]);
+    // Verificar disponibilidade da sala (se estiver atualizando data/sala)
+    if ((data_inicio && data_fim) || sala_id) {
+      const salaIdParaChecar = sala_id || reservaExistente.rows[0].sala_id;
+      const dataInicioParaChecar =
+        data_inicio || reservaExistente.rows[0].data_inicio;
+      const dataFimParaChecar = data_fim || reservaExistente.rows[0].data_fim;
+
+      const conflito = await pool.query(
+        `SELECT id FROM reservas 
+         WHERE sala_id = $1 
+         AND id != $2
+         AND status = 'confirmada'
+         AND ((data_inicio <= $3 AND data_fim >= $3) OR 
+              (data_inicio <= $4 AND data_fim >= $4) OR
+              (data_inicio >= $3 AND data_fim <= $4))`,
+        [salaIdParaChecar, id, dataInicioParaChecar, dataFimParaChecar]
+      );
+
+      if (conflito.rows.length > 0) {
+        return res
+          .status(409)
+          .json({ error: "Sala já reservada para este horário" });
+      }
+    }
+
+    // Construir update dinamicamente com campos presentes
+    const updateFields = [];
+    const updateValues = [];
+    let paramIndex = 1;
+
+    if (sala_id !== undefined) {
+      updateFields.push(`sala_id = $${paramIndex}`);
+      updateValues.push(sala_id);
+      paramIndex++;
+    }
+
+    if (usuario_nome !== undefined) {
+      updateFields.push(`usuario_nome = $${paramIndex}`);
+      updateValues.push(usuario_nome);
+      paramIndex++;
+    }
+
+    if (data_inicio !== undefined) {
+      updateFields.push(`data_inicio = $${paramIndex}`);
+      updateValues.push(data_inicio);
+      paramIndex++;
+    }
+
+    if (data_fim !== undefined) {
+      updateFields.push(`data_fim = $${paramIndex}`);
+      updateValues.push(data_fim);
+      paramIndex++;
+    }
+
+    if (proposito !== undefined) {
+      updateFields.push(`proposito = $${paramIndex}`);
+      updateValues.push(proposito);
+      paramIndex++;
+    }
+
+    if (status !== undefined) {
+      updateFields.push(`status = $${paramIndex}`);
+      updateValues.push(status);
+      paramIndex++;
+    }
+
+    updateFields.push(`updated_at = CURRENT_TIMESTAMP`);
+
+    // Se não há campos para atualizar
+    if (updateFields.length === 1) {
+      return res.status(400).json({ error: "Nenhum campo para atualizar" });
+    }
+
+    const query = `
+      UPDATE reservas SET ${updateFields.join(", ")}
+      WHERE id = $${paramIndex} RETURNING *
+    `;
+
+    const result = await pool.query(query, [...updateValues, id]);
+
+    // Obter o nome da sala para a resposta
+    const salaAtualizada = result.rows[0].sala_id;
+    const salaInfo = await pool.query("SELECT nome FROM salas WHERE id = $1", [
+      salaAtualizada,
+    ]);
+
+    const reservaCompleta = {
+      ...result.rows[0],
+      sala_nome: salaInfo.rows[0]?.nome || "Sala desconhecida",
+    };
+
+    res.json(reservaCompleta);
   } catch (err) {
     console.error("Error updating reservation:", err);
     res.status(500).json({ error: err.message });
@@ -105,8 +221,12 @@ router.put("/:id", async (req, res) => {
 // Delete a reservation
 router.delete("/:id", async (req, res) => {
   try {
-    console.log("Deleting reservation:", req.params.id);
     const { id } = req.params;
+
+    if (!id || isNaN(parseInt(id))) {
+      return res.status(400).json({ error: "ID inválido" });
+    }
+
     const result = await pool.query(
       "DELETE FROM reservas WHERE id = $1 RETURNING *",
       [id]

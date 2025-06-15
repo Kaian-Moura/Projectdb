@@ -66,7 +66,6 @@ function displayRooms(salas) {
     const locationPara = document.createElement("p");
     locationPara.innerHTML = `<strong>Localização:</strong> ${sala.localizacao}`;
 
-
     const featuresDiv = document.createElement("div");
     featuresDiv.className = "room-features";
 
@@ -80,7 +79,6 @@ function displayRooms(salas) {
       });
     }
 
-  
     roomInfo.appendChild(roomName);
     roomInfo.appendChild(capacityPara);
     roomInfo.appendChild(locationPara);
@@ -103,6 +101,7 @@ function attachReservationHandlers() {
   document.querySelectorAll(".reserve-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const salaId = this.getAttribute("data-id");
+      // Pass the sala_id as a URL parameter
       window.location.href = `/reservas-view?sala=${salaId}`;
     });
   });

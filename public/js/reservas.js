@@ -289,11 +289,54 @@ function handleFormSubmit(e) {
   const url = form.getAttribute("action");
   const method = form.getAttribute("method");
 
+  // Validar dados antes de enviar
+  const salaId = formData.get("sala_id");
+  const usuarioNome = formData.get("usuario_nome");
+  const dataInicio = formData.get("data_inicio");
+  const dataFim = formData.get("data_fim");
+
+  // Validações básicas no cliente
+  if (!salaId) {
+    showModal("Erro", "Por favor, selecione uma sala", true);
+    return;
+  }
+
+  if (!usuarioNome || usuarioNome.trim().length < 3) {
+    showModal(
+      "Erro",
+      "Por favor, informe um nome válido (mínimo 3 caracteres)",
+      true
+    );
+    return;
+  }
+
+  if (!dataInicio || !dataFim) {
+    showModal(
+      "Erro",
+      "Por favor, selecione data e horário para a reserva",
+      true
+    );
+    return;
+  }
+
+  // Garantir que datas estejam no formato ISO
+  const dataInicioFormatada = formatarDataISO(dataInicio);
+  const dataFimFormatada = formatarDataISO(dataFim);
+
   // Converter FormData para um objeto regular
   const data = {};
   formData.forEach((value, key) => {
-    data[key] = value;
+    // Substituir valores de data pelos formatados
+    if (key === "data_inicio") {
+      data[key] = dataInicioFormatada;
+    } else if (key === "data_fim") {
+      data[key] = dataFimFormatada;
+    } else {
+      data[key] = value;
+    }
   });
+
+  console.log("Enviando dados:", data); // Log para debug
 
   // Enviar requisição usando Fetch API
   fetch(url, {
@@ -304,9 +347,23 @@ function handleFormSubmit(e) {
     },
     body: JSON.stringify(data),
   })
-    .then((response) => {
+    .then(async (response) => {
       if (!response.ok) {
-        throw new Error(`Erro HTTP! Status: ${response.status}`);
+        // Tentar obter mensagens de erro detalhadas do servidor
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+          console.error("Erro detalhado:", errorData);
+
+          let errorMessage = errorData.error || "Erro ao processar reserva";
+          if (errorData.details && Array.isArray(errorData.details)) {
+            errorMessage += ": " + errorData.details.join(", ");
+          }
+
+          throw new Error(errorMessage);
+        } else {
+          throw new Error(`Erro HTTP! Status: ${response.status}`);
+        }
       }
       return response.json();
     })
@@ -326,10 +383,31 @@ function handleFormSubmit(e) {
       console.error("Erro:", error);
       showModal(
         "Erro",
-        "Ocorreu um erro ao processar sua reserva. Por favor, tente novamente.",
+        `Ocorreu um erro ao processar sua reserva: ${error.message}`,
         true
       );
     });
+}
+
+/**
+ * Formata uma string de data para garantir que esteja no formato ISO
+ * @param {string} dateString - String de data a ser formatada
+ * @returns {string} Data formatada em padrão ISO
+ */
+function formatarDataISO(dateString) {
+  if (!dateString) return "";
+
+  try {
+    // Verificar se já está no formato ISO válido
+    const date = new Date(dateString);
+    if (!isNaN(date.getTime())) {
+      return date.toISOString().slice(0, 19);
+    }
+    return "";
+  } catch (e) {
+    console.error("Erro ao formatar data para ISO:", e);
+    return "";
+  }
 }
 
 /**
@@ -579,10 +657,11 @@ function preSelectRoomFromURL() {
     if (roomSelect) {
       roomSelect.value = roomId;
 
-      // Se uma data estiver selecionada, atualizar horários
-      const selectedDateEl = document.querySelector(".date-option.selected");
-      if (selectedDateEl) {
-        generateTimeSlots(selectedDateEl.dataset.date);
+      // Se uma data estiver já selecionada, atualizar horários
+      const firstDateOption = document.querySelector(".date-option");
+      if (firstDateOption) {
+        // Selecionar a primeira data disponível automaticamente
+        firstDateOption.click();
       }
 
       // Rolar para o formulário
@@ -592,7 +671,6 @@ function preSelectRoomFromURL() {
     }
   }
 }
-
 // Expor funções necessárias para manipuladores de eventos inline
 window.editReservation = editReservation;
 window.deleteReservation = deleteReservation;

@@ -80,6 +80,21 @@ app.get("/reservas-view", async (req, res) => {
   }
 });
 
+// Rota para a página de visualização de salas
+app.get("/salas-view", async (req, res) => {
+  try {
+    // Buscar todas as salas do banco de dados
+    pool = require("./config/database");
+    const result = await pool.query("SELECT * FROM salas");
+    const salas = result.rows;
+
+    res.render("salas", { salas });
+  } catch (error) {
+    console.error("Erro ao buscar salas:", error);
+    res.render("salas", { salas: [], erro: "Erro ao carregar as salas." });
+  }
+});
+
 // Status endpoint for API health check
 app.get("/status", (req, res) => {
   res.json({ status: "online", timestamp: new Date().toISOString() });

@@ -45,9 +45,13 @@ router.get("/usuario/:nome", async (req, res) => {
 // Criar uma nova reserva
 router.post("/", async (req, res) => {
   try {
+    // Log de depuração
+    console.log("Dados recebidos:", req.body);
+
     // Validar dados da reserva
     const { error, value } = validateReserva(req.body);
     if (error) {
+      console.error("Erro de validação:", error.details);
       return res.status(400).json({
         error: "Dados inválidos",
         details: error.details.map((d) => d.message),

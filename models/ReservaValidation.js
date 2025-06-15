@@ -11,20 +11,16 @@ const reservaSchema = Joi.object({
     "string.min": "O nome deve ter pelo menos 3 caracteres",
     "string.max": "O nome deve ter no máximo 100 caracteres",
   }),
-  data_inicio: Joi.date().iso().required().messages({
+  data_inicio: Joi.date().required().messages({
     "any.required": "A data de início é obrigatória",
     "date.base": "Data de início inválida",
-    "date.format": "Data de início deve estar no formato ISO",
   }),
-  data_fim: Joi.date()
-    .iso()
-    .greater(Joi.ref("data_inicio"))
-    .required()
-    .messages({
-      "any.required": "A data de término é obrigatória",
-      "date.base": "Data de término inválida",
-      "date.greater": "A data de término deve ser posterior à data de início",
-    }),
+  data_fim: Joi.date().min(Joi.ref("data_inicio")).required().messages({
+    "any.required": "A data de término é obrigatória",
+    "date.base": "Data de término inválida",
+    "date.min":
+      "A data de término deve ser igual ou posterior à data de início",
+  }),
   proposito: Joi.string().allow("").optional(),
   status: Joi.string()
     .valid("confirmada", "cancelada", "pendente")
@@ -38,8 +34,8 @@ const reservaUpdateSchema = Joi.object({
   id: Joi.number().optional(),
   sala_id: Joi.number().optional(),
   usuario_nome: Joi.string().min(3).max(100).optional(),
-  data_inicio: Joi.date().iso().optional(),
-  data_fim: Joi.date().iso().optional(),
+  data_inicio: Joi.date().optional(),
+  data_fim: Joi.date().optional(),
   proposito: Joi.string().allow("").optional(),
   status: Joi.string().valid("confirmada", "cancelada", "pendente").optional(),
 })
@@ -54,7 +50,24 @@ const reservaUpdateSchema = Joi.object({
  * @returns {Object} Resultado da validação
  */
 function validateReserva(data) {
-  return reservaSchema.validate(data, { abortEarly: false });
+  // Criar uma cópia dos dados para não modificar o original
+  const processedData = { ...data };
+
+  // Tratar o campo id: remover se for string vazia
+  if (processedData.id === "") {
+    delete processedData.id;
+  }
+  // Garantir que id seja um número se presente
+  else if (processedData.id && typeof processedData.id === "string") {
+    processedData.id = parseInt(processedData.id, 10);
+  }
+
+  // Garantir que sala_id seja um número
+  if (processedData.sala_id && typeof processedData.sala_id === "string") {
+    processedData.sala_id = parseInt(processedData.sala_id, 10);
+  }
+
+  return reservaSchema.validate(processedData, { abortEarly: false });
 }
 
 /**
@@ -63,7 +76,24 @@ function validateReserva(data) {
  * @returns {Object} Resultado da validação
  */
 function validateReservaUpdate(data) {
-  return reservaUpdateSchema.validate(data, { abortEarly: false });
+  // Criar uma cópia dos dados para não modificar o original
+  const processedData = { ...data };
+
+  // Tratar o campo id: remover se for string vazia
+  if (processedData.id === "") {
+    delete processedData.id;
+  }
+  // Garantir que id seja um número se presente
+  else if (processedData.id && typeof processedData.id === "string") {
+    processedData.id = parseInt(processedData.id, 10);
+  }
+
+  // Garantir que sala_id seja um número se presente
+  if (processedData.sala_id && typeof processedData.sala_id === "string") {
+    processedData.sala_id = parseInt(processedData.sala_id, 10);
+  }
+
+  return reservaUpdateSchema.validate(processedData, { abortEarly: false });
 }
 
 module.exports = { validateReserva, validateReservaUpdate };

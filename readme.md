@@ -267,7 +267,7 @@ A documentação completa da arquitetura web está disponível em <a href="./doc
 
 ## Como Testar as APIs
 
-Você pode testar os endpoints usando ferramentas como Postman, Insomnia ou o arquivo `rest.http` incluso no projeto.
+Você pode testar os endpoints usando ferramentas como Postman, Insomnia ou o arquivo `rest.http` inclusos no projeto.
 
 Exemplo de endpoints:
 
@@ -291,3 +291,38 @@ Veja exemplos de requisições no arquivo `rest.http` ou utilize o Postman para 
 - [x] Interface responsiva e atraente
 - [x] Validações e feedback ao usuário
 - [x] Documentação completa
+
+### Solução de Problemas de Conexão com o Banco de Dados
+
+Se você encontrar erros como `ECONNREFUSED` ao tentar executar o script de inicialização do banco de dados, verifique:
+
+1. **PostgreSQL instalado e em execução**:
+
+   - No Windows: Verifique o aplicativo Serviços ou o Gerenciador de Tarefas
+   - No Linux: Execute `sudo service postgresql status`
+   - No macOS: Execute `pg_isready` ou `brew services list`
+
+2. **Configurações de conexão**:
+
+   - Certifique-se de que o arquivo `.env` existe e contém as informações corretas
+   - Verifique se o nome de usuário e senha estão corretos
+   - Confirme o número da porta (padrão: 5432)
+
+3. **Criação do banco de dados**:
+
+   - Certifique-se de que o banco de dados especificado já existe:
+
+   ```sql
+   psql -U postgres
+   CREATE DATABASE kaian;
+   \q
+   ```
+
+4. **Acesso ao banco**:
+
+   - Verifique se o usuário especificado tem permissões necessárias
+   - Teste a conexão diretamente via `psql -h localhost -U seu_usuario -d kaian`
+
+5. **Firewall ou serviços**:
+   - Verifique se não há firewall bloqueando a conexão com a porta 5432
+   - Verifique se o PostgreSQL está aceitando conexões localhost

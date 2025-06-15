@@ -12,6 +12,7 @@ h1 {
   font-size: 32px;
 }
 
+/* Room listing page styles */
 .rooms-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

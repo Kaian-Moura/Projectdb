@@ -13,6 +13,31 @@
         <h1>Salas Disponíveis</h1>
       </header>
 
+      <!-- Adicionando seção de filtro -->
+      <section class="filter-section">
+        <h2 class="filter-title">Filtrar Salas</h2>
+        <div class="filter-form">
+          <div class="filter-group">
+            <label for="capacidade">Capacidade Mínima:</label>
+            <select id="capacidade">
+              <option value="1">1 pessoa</option>
+              <option value="2">2 pessoas</option>
+              <option value="5">5 pessoas</option>
+              <option value="10">10 pessoas</option>
+              <option value="20">20 pessoas</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="dataReserva">Data Desejada:</label>
+            <input type="date" id="dataReserva">
+          </div>
+          <div class="filter-buttons">
+            <button id="aplicarFiltro" class="filter-btn">Aplicar Filtros</button>
+            <button id="limparFiltro" class="filter-btn clear-btn">Limpar</button>
+          </div>
+        </div>
+      </section>
+
       <div class="rooms-container" id="roomList">
         <!-- Salas serão carregadas dinamicamente via JavaScript -->
         <% if (salas && salas.length > 0) { %> <% salas.forEach(function(sala) {
@@ -45,31 +70,6 @@
     <script src="/js/salas.js"></script>
   </body>
 </html>
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-      }
-
-      .room-card {
-        background-color: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-
-      .room-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      }
-
-      .room-image {
-        height: 150px;
-        background-color: var(--light-blue);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--primary);
-        font-size: 24px;
         font-weight: bold;
       }
 

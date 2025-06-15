@@ -1,17 +1,17 @@
 // routes/index.js
 const express = require("express");
 const router = express.Router();
-const pool = require("../config/database"); // Importação do pool estava faltando
+const pool = require("../config/database");
 
-// Import routes
+// Importar rotas
 try {
   const reservasRoutes = require("./reservas");
 
-  // Register routes
+  // Registrar rotas
   router.use("/reservas", reservasRoutes);
-  console.log("Reservas routes registered successfully");
+  console.log("Rotas de reservas registradas com sucesso");
 } catch (error) {
-  console.error("Error loading reservas routes:", error.message);
+  console.error("Erro ao carregar rotas de reservas:", error.message);
 }
 
 // Rota para a página de visualização de salas

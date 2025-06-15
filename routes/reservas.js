@@ -6,7 +6,7 @@ const {
   validateReservaUpdate,
 } = require("../models/ReservaValidation");
 
-// Get all reservations
+// Buscar todas as reservas
 router.get("/", async (req, res) => {
   try {
     const result = await pool.query(`
@@ -17,12 +17,12 @@ router.get("/", async (req, res) => {
     `);
     res.json(result.rows);
   } catch (err) {
-    console.error("Error fetching reservations:", err);
+    console.error("Erro ao buscar reservas:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// Get reservations by user name
+// Buscar reservas por nome de usuário
 router.get("/usuario/:nome", async (req, res) => {
   try {
     const { nome } = req.params;
@@ -42,7 +42,7 @@ router.get("/usuario/:nome", async (req, res) => {
   }
 });
 
-// Create a new reservation
+// Criar uma nova reserva
 router.post("/", async (req, res) => {
   try {
     // Validar dados da reserva
@@ -89,12 +89,12 @@ router.post("/", async (req, res) => {
 
     res.status(201).json(reservaCompleta);
   } catch (err) {
-    console.error("Error creating reservation:", err);
+    console.error("Erro ao criar reserva:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// Update a reservation
+// Atualizar uma reserva
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -213,12 +213,12 @@ router.put("/:id", async (req, res) => {
 
     res.json(reservaCompleta);
   } catch (err) {
-    console.error("Error updating reservation:", err);
+    console.error("Erro ao atualizar reserva:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// Delete a reservation
+// Excluir uma reserva
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -238,18 +238,18 @@ router.delete("/:id", async (req, res) => {
 
     res.json({ message: "Reserva excluída com sucesso" });
   } catch (err) {
-    console.error("Error deleting reservation:", err);
+    console.error("Erro ao excluir reserva:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// Get all rooms
+// Buscar todas as salas
 router.get("/salas", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM salas ORDER BY nome");
     res.json(result.rows);
   } catch (err) {
-    console.error("Error fetching rooms:", err);
+    console.error("Erro ao buscar salas:", err);
     res.status(500).json({ error: err.message });
   }
 });

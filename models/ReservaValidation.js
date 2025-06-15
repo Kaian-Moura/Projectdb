@@ -1,69 +1,69 @@
 const Joi = require("joi");
 
-// Schema de validação para reservas
 const reservaSchema = Joi.object({
-  sala_id: Joi.number().integer().positive().required().messages({
-    "number.base": "ID da sala deve ser um número",
-    "number.integer": "ID da sala deve ser um número inteiro",
-    "number.positive": "ID da sala deve ser positivo",
-    "any.required": "ID da sala é obrigatório",
+  id: Joi.number().optional(),
+  sala_id: Joi.number().required().messages({
+    "any.required": "O ID da sala é obrigatório",
+    "number.base": "O ID da sala deve ser um número",
   }),
-
   usuario_nome: Joi.string().min(3).max(100).required().messages({
-    "string.base": "Nome do usuário deve ser texto",
-    "string.min": "Nome do usuário deve ter no mínimo {#limit} caracteres",
-    "string.max": "Nome do usuário deve ter no máximo {#limit} caracteres",
-    "any.required": "Nome do usuário é obrigatório",
+    "any.required": "O nome do usuário é obrigatório",
+    "string.min": "O nome deve ter pelo menos 3 caracteres",
+    "string.max": "O nome deve ter no máximo 100 caracteres",
   }),
-
-  data_inicio: Joi.date().iso().greater("now").required().messages({
-    "date.base": "Data de início deve ser uma data válida",
-    "date.format": "Data de início deve estar em formato ISO",
-    "date.greater": "Data de início deve ser no futuro",
-    "any.required": "Data de início é obrigatória",
+  data_inicio: Joi.date().iso().required().messages({
+    "any.required": "A data de início é obrigatória",
+    "date.base": "Data de início inválida",
+    "date.format": "Data de início deve estar no formato ISO",
   }),
-
-  data_fim: Joi.date().iso().min(Joi.ref("data_inicio")).required().messages({
-    "date.base": "Data de término deve ser uma data válida",
-    "date.format": "Data de término deve estar em formato ISO",
-    "date.min": "Data de término deve ser após a data de início",
-    "any.required": "Data de término é obrigatória",
-  }),
-
-  proposito: Joi.string().min(5).max(500).messages({
-    "string.base": "Propósito deve ser texto",
-    "string.min": "Propósito deve ter no mínimo {#limit} caracteres",
-    "string.max": "Propósito deve ter no máximo {#limit} caracteres",
-  }),
-
+  data_fim: Joi.date()
+    .iso()
+    .greater(Joi.ref("data_inicio"))
+    .required()
+    .messages({
+      "any.required": "A data de término é obrigatória",
+      "date.base": "Data de término inválida",
+      "date.greater": "A data de término deve ser posterior à data de início",
+    }),
+  proposito: Joi.string().allow("").optional(),
   status: Joi.string()
     .valid("confirmada", "cancelada", "pendente")
-    .default("confirmada")
-    .messages({
-      "any.only": "Status deve ser confirmada, cancelada ou pendente",
-    }),
+    .default("confirmada"),
 });
 
-// Funções de validação
-const validateReserva = (reservaData) => {
-  return reservaSchema.validate(reservaData, { abortEarly: false });
-};
-
-// Validação parcial para atualizações
-const validateReservaUpdate = (reservaData) => {
-  const updateSchema = Joi.object({
-    sala_id: reservaSchema.extract("sala_id").optional(),
-    usuario_nome: reservaSchema.extract("usuario_nome").optional(),
-    data_inicio: reservaSchema.extract("data_inicio").optional(),
-    data_fim: reservaSchema.extract("data_fim").optional(),
-    proposito: reservaSchema.extract("proposito").optional(),
-    status: reservaSchema.extract("status").optional(),
+/**
+ * Schema de validação para atualização de reserva
+ */
+const reservaUpdateSchema = Joi.object({
+  id: Joi.number().optional(),
+  sala_id: Joi.number().optional(),
+  usuario_nome: Joi.string().min(3).max(100).optional(),
+  data_inicio: Joi.date().iso().optional(),
+  data_fim: Joi.date().iso().optional(),
+  proposito: Joi.string().allow("").optional(),
+  status: Joi.string().valid("confirmada", "cancelada", "pendente").optional(),
+})
+  .min(1)
+  .messages({
+    "object.min": "Pelo menos um campo deve ser fornecido para atualização",
   });
 
-  return updateSchema.validate(reservaData, { abortEarly: false });
-};
+/**
+ * Valida dados de reserva para criação
+ * @param {Object} data - Dados da reserva
+ * @returns {Object} Resultado da validação
+ */
+function validateReserva(data) {
+  return reservaSchema.validate(data, { abortEarly: false });
+}
 
-module.exports = {
-  validateReserva,
-  validateReservaUpdate,
-};
+/**
+ * Valida dados de reserva para atualização
+ * @param {Object} data - Dados da reserva para atualização
+ * @returns {Object} Resultado da validação
+ */
+function validateReservaUpdate(data) {
+  return reservaUpdateSchema.validate(data, { abortEarly: false });
+}
+
+module.exports = { validateReserva, validateReservaUpdate };

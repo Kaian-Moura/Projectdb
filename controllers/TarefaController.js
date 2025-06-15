@@ -1,4 +1,3 @@
-// controllers/TarefaController.js
 const pool = require("../config/database");
 
 exports.criarTarefa = async (req, res) => {

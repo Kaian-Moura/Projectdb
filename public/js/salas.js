@@ -1,85 +1,158 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Script de salas carregado");
+  console.log("Script de gerenciamento de salas carregado");
 
-  // Função para buscar todas as salas via API
-  function loadRooms() {
-    fetch("/api/salas")
-      .then((response) => response.json())
-      .then((salas) => {
-        // Exemplo de como mostrar as salas em uma div com id "roomList"
-        const roomList = document.getElementById("roomList");
-        if (roomList) {
-          roomList.innerHTML = "";
-          salas.forEach((sala) => {
-            const roomCard = document.createElement("div");
-            roomCard.className = "room-card";
-            roomCard.innerHTML = `
-              <h3>${sala.nome}</h3>
-              <p>Capacidade: ${sala.capacidade} pessoas</p>
-              <p>Localização: ${sala.localizacao}</p>
-              <p>Recursos: ${sala.recursos || "Nenhum recurso especial"}</p>
-              <button class="reserve-btn" data-id="${sala.id}">Reservar</button>
-            `;
-            roomList.appendChild(roomCard);
-          });
+  const roomList = document.getElementById("roomList");
+  if (roomList && roomList.children.length === 0) {
+    loadRoomsFromAPI();
+  } else {
+    attachReservationHandlers();
+  }
+  setupFilters();
+});
 
-          // Adicionar event listeners para os botões de reserva
-          document.querySelectorAll(".reserve-btn").forEach((btn) => {
-            btn.addEventListener("click", function () {
-              const salaId = this.getAttribute("data-id");
-              window.location.href = `/reservas-view?sala=${salaId}`;
-            });
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao carregar salas:", error);
-      });
+function loadRoomsFromAPI() {
+  fetch("/api/salas")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Erro HTTP! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((salas) => {
+      displayRooms(salas);
+      attachReservationHandlers();
+    })
+    .catch((error) => {
+      console.error("Erro ao carregar salas:", error);
+      const roomList = document.getElementById("roomList");
+      if (roomList) {
+        roomList.innerHTML = `<p class="error">Não foi possível carregar as salas. ${error.message}</p>`;
+      }
+    });
+}
+
+/**
+ * Exibe as salas no container de lista de salas
+ * @param {Array} salas - Array de objetos de sala
+ */
+function displayRooms(salas) {
+  const roomList = document.getElementById("roomList");
+  if (!roomList) return;
+
+  roomList.innerHTML = "";
+
+  if (salas.length === 0) {
+    roomList.innerHTML = "<p>Nenhuma sala disponível no momento.</p>";
+    return;
   }
 
-  // Carregar salas quando a página iniciar
-  loadRooms();
+  salas.forEach((sala) => {
+    const roomCard = document.createElement("div");
+    roomCard.className = "room-card";
 
-  // Botões de reserva - redireciona para a página de reservas com o ID da sala
+    const roomImage = document.createElement("div");
+    roomImage.className = "room-image";
+    roomImage.textContent = sala.nome;
+
+    const roomInfo = document.createElement("div");
+    roomInfo.className = "room-info";
+
+    const roomName = document.createElement("h3");
+    roomName.textContent = sala.nome;
+
+    const capacityPara = document.createElement("p");
+    capacityPara.innerHTML = `<strong>Capacidade:</strong> ${sala.capacidade} pessoas`;
+
+    const locationPara = document.createElement("p");
+    locationPara.innerHTML = `<strong>Localização:</strong> ${sala.localizacao}`;
+
+
+    const featuresDiv = document.createElement("div");
+    featuresDiv.className = "room-features";
+
+    if (sala.recursos) {
+      const recursos = sala.recursos.split(",");
+      recursos.forEach((recurso) => {
+        const featureSpan = document.createElement("span");
+        featureSpan.className = "feature";
+        featureSpan.textContent = recurso.trim();
+        featuresDiv.appendChild(featureSpan);
+      });
+    }
+
+  
+    roomInfo.appendChild(roomName);
+    roomInfo.appendChild(capacityPara);
+    roomInfo.appendChild(locationPara);
+    roomInfo.appendChild(featuresDiv);
+
+    const reserveBtn = document.createElement("button");
+    reserveBtn.className = "reserve-btn";
+    reserveBtn.textContent = "Disponível";
+    reserveBtn.setAttribute("data-id", sala.id);
+
+    roomCard.appendChild(roomImage);
+    roomCard.appendChild(roomInfo);
+    roomCard.appendChild(reserveBtn);
+
+    roomList.appendChild(roomCard);
+  });
+}
+
+function attachReservationHandlers() {
   document.querySelectorAll(".reserve-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const salaId = this.getAttribute("data-id");
       window.location.href = `/reservas-view?sala=${salaId}`;
     });
   });
+}
 
-  // Filtros
-  document
-    .getElementById("aplicarFiltro")
-    .addEventListener("click", function () {
-      const capacidadeMinima = document.getElementById("capacidade").value;
-      const dataReserva = document.getElementById("dataReserva").value;
+function setupFilters() {
+  const filterButton = document.getElementById("aplicarFiltro");
+  const clearButton = document.getElementById("limparFiltro");
 
-      // Filtrar cards de sala
-      document.querySelectorAll(".room-card").forEach((card) => {
-        const capacidadeTexto =
-          card.querySelector("p:nth-child(2)").textContent;
-        const capacidade = parseInt(capacidadeTexto.match(/\d+/)[0]);
+  if (filterButton) {
+    filterButton.addEventListener("click", applyFilters);
+  }
 
-        // Esconder salas com capacidade menor que a selecionada
-        if (capacidade < capacidadeMinima) {
-          card.style.display = "none";
-        } else {
-          card.style.display = "";
-        }
-      });
-    });
+  if (clearButton) {
+    clearButton.addEventListener("click", clearFilters);
+  }
+}
 
-  // Limpar filtros
-  document
-    .getElementById("limparFiltro")
-    .addEventListener("click", function () {
-      document.getElementById("capacidade").value = "1";
-      document.getElementById("dataReserva").value = "";
+function applyFilters() {
+  const capacitySelect = document.getElementById("capacidade");
+  const dateInput = document.getElementById("dataReserva");
 
-      // Mostrar todas as salas novamente
-      document.querySelectorAll(".room-card").forEach((card) => {
-        card.style.display = "";
-      });
-    });
-});
+  if (!capacitySelect) return;
+
+  const minCapacity = parseInt(capacitySelect.value) || 1;
+  const selectedDate = dateInput ? dateInput.value : "";
+
+  const roomCards = document.querySelectorAll(".room-card");
+
+  roomCards.forEach((card) => {
+    const capacityText = card.querySelector("p:nth-child(2)").textContent;
+    const capacityMatch = capacityText.match(/\d+/);
+    const capacity = capacityMatch ? parseInt(capacityMatch[0]) : 0;
+
+    if (capacity < minCapacity) {
+      card.style.display = "none";
+    } else {
+      card.style.display = "";
+    }
+  });
+}
+
+function clearFilters() {
+  const capacitySelect = document.getElementById("capacidade");
+  const dateInput = document.getElementById("dataReserva");
+
+  if (capacitySelect) capacitySelect.value = "1";
+  if (dateInput) dateInput.value = "";
+
+  document.querySelectorAll(".room-card").forEach((card) => {
+    card.style.display = "";
+  });
+}

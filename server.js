@@ -13,6 +13,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, "public")));
+
 // Usando as rotas definidas
 app.use("/api", routes);
 
@@ -75,6 +78,16 @@ app.get("/reservas-view", async (req, res) => {
       formatDate: (date) => new Date(date).toLocaleString(),
     });
   }
+});
+
+// Status endpoint for API health check
+app.get("/status", (req, res) => {
+  res.json({ status: "online", timestamp: new Date().toISOString() });
+});
+
+// Documentação da API
+app.get("/documentacao", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "documentacao-reservas.html"));
 });
 
 // Registre as rotas explicitamente na raiz

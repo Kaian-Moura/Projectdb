@@ -596,17 +596,7 @@ function preSelectRoomFromURL() {
     }
   }
 }
-// Expor funções necessárias para manipuladores de eventos inline
-window.deleteReservation = deleteReservation;
-    .catch((err) => {
-      console.error(err);
-      showModal("Erro", "Erro ao cancelar reserva. Tente novamente.", true);
-    });
-}
 
-/**
- * Inicializa funcionalidade de filtro de reservas
- */
 function initializeFilters() {
   const filterButton = document.getElementById("filterButton");
   if (filterButton) {

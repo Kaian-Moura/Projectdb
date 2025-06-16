@@ -4,7 +4,20 @@
 
 O Sistema de Reserva de Salas é uma aplicação web desenvolvida para simular como seria a reserva e utilização das salas de reunião do Inteli (R01 até R07). O sistema permite que estudantes e funcionários possam agendar as salas disponíveis para reuniões, trabalhos em grupo, mentorias e outras atividades acadêmicas, garantindo organização e otimização dos espaços compartilhados.
 
-### Características principais:
+## Demonstração
+
+### Vídeo de Apresentação
+[![Demonstração em Vídeo](https://img.youtube.com/vi/pB6yEwINZQY/0.jpg)](https://youtu.be/pB6yEwINZQY)
+
+[Assista ao vídeo de demonstração](https://youtu.be/pB6yEwINZQY)
+
+### Interface do Sistema
+
+![Reservar sala](https://res.cloudinary.com/dkn9xjb1r/image/upload/fl_preserve_transparency/v1750032565/Captura_de_tela_2025-06-15_210833_ryxclh.jpg)
+
+![Gerenciamento de Salas](https://res.cloudinary.com/dkn9xjb1r/image/upload/fl_preserve_transparency/v1750032656/Captura_de_tela_2025-06-15_211033_d1d2rr.jpg)
+
+## Características principais
 
 - **Reserva de Salas**: Agendamento de salas de reunião com datas e horários específicos através de uma interface intuitiva
 - **Visualização de Salas**: Catálogo de todas as salas disponíveis com suas características e capacidade
@@ -13,21 +26,23 @@ O Sistema de Reserva de Salas é uma aplicação web desenvolvida para simular c
 - **Modal de Confirmação**: Feedback imediato ao usuário sobre o status das operações
 - **Filtragem de Reservas**: Possibilidade de filtrar reservas por nome do responsável
 
-## Interface de Usuário
+## Tecnologias Utilizadas
 
-O sistema conta com três páginas principais:
-
-1. **Página Principal**: Visão geral do sistema e acesso às funcionalidades
-2. **Visualização de Salas**: Catálogo de todas as salas disponíveis para reserva
-3. **Gerenciamento de Reservas**: Interface para criar e gerenciar reservas
-
-### Funcionalidades de Interface
-
-- Seleção visual de datas e horários para reservas
-- Confirmações via modais em vez de redirecionamentos
-- Design responsivo e intuitivo com esquema de cores azuis
-- Filtragem dinâmica de informações
-- Validação de formulários em tempo real
+- **Backend**: 
+  - Node.js
+  - Express
+  - Joi (validação de dados)
+- **Banco de Dados**: 
+  - PostgreSQL
+  - Supabase
+- **Frontend**: 
+  - HTML
+  - CSS
+  - JavaScript
+  - EJS (templates)
+- **Arquitetura**: MVC (Model-View-Controller)
+- **API**: Fetch API para comunicação cliente-servidor assíncrona
+- **Documentação**: Markdown, HTML
 
 ## Como Executar o Projeto
 
@@ -43,7 +58,7 @@ O sistema conta com três páginas principais:
 
 ```bash
 git clone git@github.com:Kaian-Moura/Projectdb.git
-cd inteli-assignments/Projectdb
+cd Projectdb
 ```
 
 2. Instale as dependências:
@@ -85,15 +100,6 @@ npm start
 ```
 
 O servidor estará disponível em http://localhost:3000
-
-## Tecnologias Utilizadas
-
-- **Backend**: Node.js, Express
-- **Banco de Dados**: PostgreSQL
-- **Frontend**: HTML, CSS, JavaScript, EJS (templates)
-- **Arquitetura**: MVC (Model-View-Controller)
-- **API**: Fetch API para comunicação cliente-servidor assíncrona
-- **Documentação**: Markdown, HTML
 
 ## API Endpoints
 
@@ -227,14 +233,14 @@ cd inteli-assignments/Projectdb
 npm install
 ```
 
-3. Configure as variáveis de ambiente: **(ainda não necessário).**
+3. Configure as variáveis de ambiente:
 
 ```bash
 cp .env.example .env
 # Edite o arquivo .env com seus dados de conexão ao banco
 ```
 
-4. Crie o banco de dados: (**ainda não necessário).**
+4. Crie o banco de dados:
 
 ```bash
 # Execute o SQL disponível na documentação para criar o schema

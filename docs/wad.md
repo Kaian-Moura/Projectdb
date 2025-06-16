@@ -29,6 +29,10 @@
    - [Deployment](#deployment)
    - [Manutenção](#manutenção)
 7. [Próximos Passos](#próximos-passos)
+8. [Reflexões sobre o Desenvolvimento](#reflexões-sobre-o-desenvolvimento)
+   - [Decisões Técnicas](#decisões-técnicas)
+   - [Aprendizados e Desafios](#aprendizados-e-desafios)
+   - [Pontos Fortes e Melhorias Futuras](#pontos-fortes-e-melhorias-futuras)
 
 ## Introdução
 
@@ -322,3 +326,52 @@ Exemplo de modelo de reserva (JSON):
 - Melhorar interface web para reservas
 - Adicionar notificações por email
 - Otimizações de performance e segurança
+
+## Reflexões sobre o Desenvolvimento
+
+### Decisões Técnicas
+
+Durante o desenvolvimento do Sistema de Reserva de Salas, diversas decisões técnicas foram tomadas para garantir um produto final robusto e funcional:
+
+- **Framework Backend**: Node.js com Express foi escolhido pela sua flexibilidade e facilidade de implementação, permitindo construir rapidamente uma API RESTful.
+- **Validação de Dados**: Utilizei Joi para validação de dados de entrada, garantindo que todos os dados recebidos pela API estejam em conformidade com as regras de negócio.
+- **Banco de Dados**: PostgreSQL foi selecionado por ser um banco de dados relacional robusto, que oferece suporte completo a transações ACID e relações complexas entre tabelas, essencial para gerenciar reservas e evitar conflitos.
+- **Supabase**: Implementado como uma camada adicional para facilitar operações com o banco de dados e oferecer funcionalidades de autenticação.
+- **Arquitetura MVC**: A aplicação foi estruturada seguindo o padrão Model-View-Controller para separar claramente as responsabilidades e facilitar manutenções futuras.
+- **Templates EJS**: Utilizados para renderização server-side das páginas, oferecendo uma experiência dinâmica sem necessidade de um framework frontend complexo.
+- **Comunicação Assíncrona**: Fetch API para comunicação entre cliente e servidor sem necessidade de recarregar páginas inteiras.
+
+### Aprendizados e Desafios
+
+Durante o desenvolvimento, enfrentei alguns desafios importantes:
+
+1. **Comunicação Front-end/Back-end**: Um dos principais desafios foi configurar corretamente a comunicação entre o front-end e o back-end, principalmente garantindo que as rotas de reserva e listagem estivessem funcionando em tempo real. A implementação de requisições assíncronas via Fetch API permitiu atualizar a interface sem recarregar a página inteira, melhorando a experiência do usuário.
+
+2. **Controle de Conflitos de Horários**: Para evitar que duas pessoas reservassem a mesma sala no mesmo horário, implementei uma verificação no backend que consulta o banco de dados por sobreposições antes de confirmar uma nova reserva. Este sistema verifica se há alguma reserva existente que se sobreponha com o período solicitado para a mesma sala.
+
+3. **Validação de Dados**: Garantir que todos os dados de entrada estivessem corretamente formatados e dentro das regras de negócio foi um desafio superado com a implementação da biblioteca Joi para validação.
+
+4. **Design Responsivo**: Adaptar a interface para diferentes tamanhos de tela exigiu atenção especial ao CSS e à estruturação dos componentes.
+
+5. **Tratamento de Erros**: Implementar um sistema robusto de tratamento de erros que fornecesse feedback útil tanto para os usuários quanto para fins de debugging foi um aprendizado importante.
+
+### Pontos Fortes e Melhorias Futuras
+
+**Pontos que funcionaram bem:**
+
+1. **Interface Intuitiva**: O design simples e direto facilita o uso do sistema mesmo para usuários inexperientes.
+2. **Sistema de Feedback**: Os modais de confirmação proporcionam feedback imediato sobre ações realizadas.
+3. **Validação em Tempo Real**: A validação de formulários previne erros antes da submissão.
+4. **API Bem Estruturada**: Endpoints claros e organizados facilitam a manutenção e expansão do sistema.
+5. **Controle de Conflitos**: O mecanismo para evitar sobreposição de reservas funcionou conforme esperado.
+
+**Pontos para melhoria:**
+
+1. **Autenticação Completa**: Implementar um sistema de autenticação robusto com diferentes níveis de acesso.
+2. **Performance**: Otimizar consultas ao banco de dados para grandes volumes de reservas.
+3. **Notificações**: Adicionar sistema de notificações por email para lembretes de reservas.
+4. **Estatísticas de Uso**: Desenvolver um dashboard para administradores visualizarem estatísticas de uso das salas.
+5. **Testes Automatizados**: Aumentar a cobertura de testes automatizados para garantir estabilidade.
+6. **Documentação Interativa da API**: Implementar Swagger ou similar para documentação interativa dos endpoints.
+
+O desenvolvimento deste projeto proporcionou um grande aprendizado sobre desenvolvimento web fullstack, desde o design da interface até a implementação de lógicas complexas de negócio e interação com banco de dados.

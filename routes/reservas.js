@@ -103,14 +103,20 @@ router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
+    console.log("Received update request for reservation:", id);
+    console.log("Request body:", req.body);
+
     // Validar dados da atualização
     const { error, value } = validateReservaUpdate(req.body);
     if (error) {
+      console.error("Validation error:", error.details);
       return res.status(400).json({
         error: "Dados inválidos",
         details: error.details.map((d) => d.message),
       });
     }
+
+    console.log("Validated data:", value);
 
     const { sala_id, usuario_nome, data_inicio, data_fim, proposito, status } =
       value;

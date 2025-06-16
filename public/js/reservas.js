@@ -258,12 +258,6 @@ function initializeFormHandlers() {
     reservationForm.addEventListener("submit", handleFormSubmit);
   }
 
-  // Botão de cancelar edição
-  const cancelEditBtn = document.getElementById("cancelEdit");
-  if (cancelEditBtn) {
-    cancelEditBtn.addEventListener("click", cancelEdit);
-  }
-
   // Manipulador de alteração de sala
   const roomSelect = document.getElementById("sala");
   if (roomSelect) {
@@ -495,84 +489,15 @@ function resetForm() {
       el.classList.remove("selected");
     });
 
-  // Resetar action e método do formulário
+  // Resetar action e método do formulário (always creation mode)
   form.action = "/api/reservas";
   form.setAttribute("method", "post");
-
-  // Esconder botão de cancelar edição
-  const cancelEditBtn = document.getElementById("cancelEdit");
-  if (cancelEditBtn) {
-    cancelEditBtn.style.display = "none";
-  }
 
   // Remover campo _method se existir
   const methodInput = document.getElementById("_method");
   if (methodInput) {
     methodInput.remove();
   }
-}
-
-/**
- * Gerencia ação de editar reserva
- * @param {string} id - ID da reserva
- */
-function editReservation(id) {
-  try {
-    // Encontrar linha da reserva pelo ID
-    const row = document.querySelector(`tr[data-id="${id}"]`);
-    if (!row) {
-      console.error("Linha não encontrada para o id:", id);
-      return;
-    }
-
-    // Preencher formulário com dados da reserva
-    document.getElementById("reservationId").value = id;
-    document.getElementById("sala").value = row.dataset.sala;
-    document.getElementById("usuario_nome").value = row.dataset.usuario;
-    document.getElementById("proposito").value = row.dataset.proposito || "";
-
-    // Preencher campos ocultos de data/hora diretamente
-    document.getElementById("data_inicio").value = formatDateForInput(
-      row.dataset.inicio
-    );
-    document.getElementById("data_fim").value = formatDateForInput(
-      row.dataset.fim
-    );
-
-    // Mudar comportamento do formulário para atualização
-    const form = document.getElementById("reservationForm");
-    form.action = `/api/reservas/${id}`;
-    form.setAttribute("method", "post");
-
-    // Adicionar campo oculto para método PUT
-    let methodInput = document.getElementById("_method");
-    if (!methodInput) {
-      methodInput = document.createElement("input");
-      methodInput.type = "hidden";
-      methodInput.name = "_method";
-      methodInput.id = "_method";
-      form.appendChild(methodInput);
-    }
-    methodInput.value = "PUT";
-
-    // Mostrar botão de cancelar edição
-    document.getElementById("cancelEdit").style.display = "";
-
-    // Rolar para o formulário
-    document
-      .querySelector(".form-section")
-      .scrollIntoView({ behavior: "smooth" });
-  } catch (e) {
-    console.error("Erro ao editar reserva:", e);
-    showModal("Erro", "Não foi possível editar a reserva", true);
-  }
-}
-
-/**
- * Cancela o modo de edição e reseta o formulário
- */
-function cancelEdit() {
-  resetForm();
 }
 
 /**
@@ -598,6 +523,81 @@ function deleteReservation(id) {
         throw new Error("Erro ao cancelar reserva");
       }
     })
+    .catch((err) => {
+      console.error(err);
+      showModal("Erro", "Erro ao cancelar reserva. Tente novamente.", true);
+    });
+}
+
+/**
+ * Inicializa funcionalidade de filtro de reservas
+ */
+function initializeFilters() {
+  const filterButton = document.getElementById("filterButton");
+  if (filterButton) {
+    filterButton.addEventListener("click", filterReservations);
+  }
+
+  const clearFilterButton = document.getElementById("clearFilter");
+  if (clearFilterButton) {
+    clearFilterButton.addEventListener("click", clearFilters);
+  }
+}
+
+/**
+ * Filtra reservas por nome de usuário
+ */
+function filterReservations() {
+  const filterName = document
+    .getElementById("filterName")
+    .value.trim()
+    .toLowerCase();
+  const rows = document.querySelectorAll("tbody tr");
+
+  rows.forEach((row) => {
+    const usuario = (row.dataset.usuario || "").toLowerCase();
+    row.style.display =
+      filterName && !usuario.includes(filterName) ? "none" : "";
+  });
+}
+
+/**
+ * Limpa filtros de reservas aplicados
+ */
+function clearFilters() {
+  document.getElementById("filterName").value = "";
+  const rows = document.querySelectorAll("tbody tr");
+  rows.forEach((row) => (row.style.display = ""));
+}
+
+/**
+ * Pré-seleciona uma sala se especificada nos parâmetros de URL
+ */
+function preSelectRoomFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const roomId = urlParams.get("sala");
+
+  if (roomId) {
+    const roomSelect = document.getElementById("sala");
+    if (roomSelect) {
+      roomSelect.value = roomId;
+
+      // Se uma data estiver já selecionada, atualizar horários
+      const firstDateOption = document.querySelector(".date-option");
+      if (firstDateOption) {
+        // Selecionar a primeira data disponível automaticamente
+        firstDateOption.click();
+      }
+
+      // Rolar para o formulário
+      document
+        .querySelector(".form-section")
+        .scrollIntoView({ behavior: "smooth" });
+    }
+  }
+}
+// Expor funções necessárias para manipuladores de eventos inline
+window.deleteReservation = deleteReservation;
     .catch((err) => {
       console.error(err);
       showModal("Erro", "Erro ao cancelar reserva. Tente novamente.", true);
